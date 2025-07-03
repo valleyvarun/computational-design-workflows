@@ -1,8 +1,11 @@
+
+
 body {
-    font-family: Arial, sans-serif;
+    min-height: 100vh;
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+    /* Example: blue to purple gradient */
+    background: linear-gradient(135deg, #4f8cff 0%, #a259ff 100%);
+    font-family: Arial, sans-serif;
 }
 
 header {
