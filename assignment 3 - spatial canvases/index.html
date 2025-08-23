@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- This tells the browser this is an HTML5 document - always include this at the top -->
+<html lang="en">
+<!-- The html tag is the root element that contains everything on the page -->
+<!-- lang="en" tells the browser this page is in English -->
+
+<head>
+  <!-- The head section contains information about the page, not visible content -->
+
+
+  <!-- ------------------------------------------------------------ -->
+  <!-- Load p5.js library from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <!-- This loads the p5.js library which provides functions for creating graphics and animations -->
+  <!-- ------------------------------------------------------------ -->
+
+  
+  <meta charset="UTF-8">
+  <!-- This sets the character encoding to UTF-8, which supports special characters and emojis -->
+  
+  <title>Module 1</title>
+  <!-- This is the title that appears in the browser tab and bookmarks -->
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- This loads the Roboto font from Google Fonts for use on our page -->
+  
+  <link rel="stylesheet" href="style.css">
+  <!-- This links our CSS file to style the page - the href points to our style.css file -->
+</head>
+
+<body>
+  <!-- The body contains all the visible content that users will see on the page -->
+
+  <main>
+    <!-- The main tag contains the primary content of the page -->
+    
+    
+
+
+    <!-- ------------------------------------------------------------ -->
+
+    <!-- ADD A NEW 'CANVAS CONTAINER' FOR EACH NEW P5.JS SKETCH (THE ORDER IS DEFINED BY THE CONTAINER NUMBER BELOW + THE MOST RECENT SKETCH SHOULD BE AT THE TOP) -->
+
+  <!-- Section for first p5.js sketch (2d-drawing.js) -->
+  <div class="section-title">Lorenz Attractor</div>
+  <p>This canvas plots three Lorenz trajectories in red, green, and blue using the P5.js library, each beginning from a slightly different point. Even these tiny differences in their initial states lead to completely divergent outcomes—a defining feature of chaos theory, which studies complex systems that are highly sensitive to their initial conditions. Commonly known as the Butterfly Effect, this phenomenon appears throughout nature, from weather systems, ocean turbulence, and smoke patterns to the motion of celestial bodies and biological processes such as heartbeat irregularities and the spread of disease.</p>
+  <div id="controls-1" class="controls" aria-label="Lorenz parameters controls"></div>
+    
+  <!-- Canvas container for first p5.js sketch (2d-drawing.js) -->
+    <div id="canvas-container-1"></div>
+  
+    <!-- Section for second p5.js sketch (bouncing-ball.js) --> 
+    <div class="section-title">Bouncing Ball Animation</div>
+    <p>Description of the canvas content/exploration</p>
+    
+    <!-- Canvas container for second p5.js sketch (bouncing-ball.js) --> 
+    <div id="canvas-container-2"></div>
+
+    <!-- Section for third p5.js sketch (zoom-pan.js) --> 
+    <div class="section-title">Interactive Grid with Zoom & Pan</div>
+    <p>Description of the canvas content/exploration</p>
+    
+    <!-- Canvas container for third p5.js sketch (zoom-pan.js) --> 
+    <div id="canvas-container-3"></div>
+ 
+    <!-- ------------------------------------------------------------ -->
+    
+  </main>
+  <!-- End of main content area -->
+  
+
+  <!-- ------------------------------------------------------------ -->
+
+  <!-- LOAD EACH NEW P5.JS SCRIPT HERE -->
+
+  <script src="2d-drawing.js"></script>
+  <script src="bouncing-ball.js"></script>
+  <script src="zoom-pan.js"></script>
+
+  <!-- ------------------------------------------------------------ -->
+
+
+</body>
+<!-- End of body - all visible content goes above this line -->
+</html>
+<!-- End of HTML document -->

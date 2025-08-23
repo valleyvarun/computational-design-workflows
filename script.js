@@ -15,6 +15,17 @@
 		document.documentElement.style.overflow = 'hidden';
 		document.body.style.overflow = 'hidden';
 
+		// Swap header title to full name if provided
+		const h2 = box.querySelector('.box-header h2');
+		if (h2) {
+			// Cache the original title once
+			if (!box.dataset.titleOriginal) {
+				box.dataset.titleOriginal = h2.textContent;
+			}
+			const full = box.dataset.fullTitle;
+			if (full) h2.textContent = full;
+		}
+
 		const expandBtn = box.querySelector('.btn-expand');
 		const minimizeBtn = box.querySelector('.btn-minimize');
 		if (expandBtn) expandBtn.hidden = true;
@@ -25,6 +36,12 @@
 		box.classList.remove('fullscreen');
 		document.documentElement.style.overflow = '';
 		document.body.style.overflow = '';
+
+		// Restore original header title if cached
+		const h2 = box.querySelector('.box-header h2');
+		if (h2 && box.dataset.titleOriginal) {
+			h2.textContent = box.dataset.titleOriginal;
+		}
 
 		const expandBtn = box.querySelector('.btn-expand');
 		const minimizeBtn = box.querySelector('.btn-minimize');
