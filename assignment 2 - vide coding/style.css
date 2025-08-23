@@ -31,15 +31,23 @@ body {
 /* Keep all other content styled on top */
 header {
   text-align: center;
-  padding: 3em 1em;
+  /* Use top padding to make room for the floating logo while keeping header background at the top */
+  padding: 60px 1em 1em; /* top, left/right, bottom */
   background: rgba(0, 0, 0, 0.6);
   border-bottom: 2px solid #444;
   z-index: 1;
+  margin-top: 0; /* header starts at top so background is visible behind logo */
+}
+
+/* tighten header vertical spacing without changing font sizes */
+header h1,
+header p {
+  margin: 0.1em 0;
 }
 
 .floating-logo {
   position: fixed;
-  top: 20px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   width: 100px;
