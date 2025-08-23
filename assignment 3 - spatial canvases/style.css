@@ -85,3 +85,28 @@ p {
 .controls input[type="range"] {
   flex: 1;
 }
+
+/* Compact layout for NPN controls */
+#controls-2.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: none;
+  padding: 6px 10px;
+}
+
+#controls-2.controls button {
+  width: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  line-height: 1.2;
+  border: 1px solid #ddd;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#controls-2.controls button:hover {
+  border-color: #bbb;
+}

@@ -43,15 +43,16 @@
 
   <!-- Section for first p5.js sketch (2d-drawing.js) -->
   <div class="section-title">Lorenz Attractor</div>
-  <p>This canvas plots three Lorenz trajectories in red, green, and blue using the P5.js library, each beginning from a slightly different point. Even these tiny differences in their initial states lead to completely divergent outcomes—a defining feature of chaos theory, which studies complex systems that are highly sensitive to their initial conditions. Commonly known as the Butterfly Effect, this phenomenon appears throughout nature, from weather systems, ocean turbulence, and smoke patterns to the motion of celestial bodies and biological processes such as heartbeat irregularities and the spread of disease.</p>
+  <p>This canvas plots three Lorenz trajectories in red, green, and blue using the P5.js library, each beginning from a slightly different point. Even these tiny differences in their initial states lead to completely divergent outcomes—a defining feature of chaos theory, which studies complex systems that are highly sensitive to their starting conditions. Commonly known as the Butterfly Effect, this phenomenon appears throughout nature, from weather systems, ocean turbulence, and smoke patterns to the motion of celestial bodies and biological processes such as heartbeat irregularities and the spread of disease.</p>
   <div id="controls-1" class="controls" aria-label="Lorenz parameters controls"></div>
     
   <!-- Canvas container for first p5.js sketch (2d-drawing.js) -->
     <div id="canvas-container-1"></div>
   
-    <!-- Section for second p5.js sketch (bouncing-ball.js) --> 
-    <div class="section-title">Bouncing Ball Animation</div>
-    <p>Description of the canvas content/exploration</p>
+  <!-- Section for second p5.js sketch (npn-doping.js) --> 
+  <div class="section-title">NPN Transistor: Silicon Lattice</div>
+  <p>Three regions (N–P–N) with a silicon atom grid. Each atom shows four orbiting electrons; doping visuals will be added next.</p>
+  <div id="controls-2" class="controls" aria-label="NPN lattice controls"></div>
     
     <!-- Canvas container for second p5.js sketch (bouncing-ball.js) --> 
     <div id="canvas-container-2"></div>
@@ -73,8 +74,8 @@
 
   <!-- LOAD EACH NEW P5.JS SCRIPT HERE -->
 
-  <script src="2d-drawing.js"></script>
-  <script src="bouncing-ball.js"></script>
+  <script src="lorenz-attractor.js"></script>
+  <script src="npn-doping.js"></script>
   <script src="zoom-pan.js"></script>
 
   <!-- ------------------------------------------------------------ -->
