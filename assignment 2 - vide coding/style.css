@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Share Tech Mono', monospace;
+  background-color: #0d0d0d;
+  color: #f1f1f1;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 🔥 Fullscreen Background Image */
+.background {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('batman-bg1.png') no-repeat center center/cover;
+  z-index: -2;
+  opacity: 1;
+}
+
+.foreground-img {
+  width: 450px; /* Previously 200px */
+  max-width: 100%;
+  margin-right: 30px;
+  filter: drop-shadow(0 0 8px #000);
+}
+
+
+/* Keep all other content styled on top */
+header {
+  text-align: center;
+  padding: 3em 1em;
+  background: rgba(0, 0, 0, 0.6);
+  border-bottom: 2px solid #444;
+  z-index: 1;
+}
+
+.floating-logo {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  z-index: 999;
+  filter: drop-shadow(0 0 10px #000);
+  transition: transform 0.3s ease;
+}
+
+.floating-logo:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+
+h1 {
+  font-size: 3em;
+  color: #ffeb3b;
+  text-shadow: 0 0 10px #ffeb3b;
+}
+
+header p {
+  font-size: 1.2em;
+  color: #bbb;
+  letter-spacing: 2px;
+}
+
+.editor {
+  padding: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2em;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+#code-container {
+  background-color: rgba(10, 10, 10, 0.85);
+  padding: 1.5em;
+  border: 1px solid #333;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px #ffeb3b33;
+  white-space: pre-wrap;
+  backdrop-filter: blur(4px);
+}
+
+footer {
+  text-align: center;
+  padding: 2em 1em;
+  font-size: 0.9em;
+  color: #888;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+#bats-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+}
+
+.bat {
+  position: absolute;
+  width: 40px;
+  opacity: 0.8;
+  animation: fly linear infinite;
+}
+
+@keyframes fly {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) rotate(360deg);
+  }
+}
+
