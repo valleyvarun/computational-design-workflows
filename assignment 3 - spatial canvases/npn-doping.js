@@ -47,9 +47,62 @@ var npnSketch = function(p) {
     canvas = p.createCanvas(sz.w, sz.h);
     canvas.parent('canvas-container-2');
     p.textFont('Roboto, sans-serif');
-  // Expose a global helper to clear dopants from external UI
+  // Expose helpers to external UI
   p.clearDopants = function(){ dopants = []; dragging = false; dragType = null; initDopingMap(); freeElectrons = []; freeHoles = []; };
   window.clearNpnDopants = p.clearDopants;
+
+  // Checker: validate dopant placement and return { ok, msg }
+  p.checkNpnWafer = function(){
+    var n1Cols = 6, pCols = 3; // column splits (left N, middle P, right N)
+    var n2Cols = 6;
+    var left = { P: 0, B: 0, total: 0 };
+    var mid  = { P: 0, B: 0, total: 0 };
+    var right= { P: 0, B: 0, total: 0 };
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var t = dopingMap[r][c];
+        if (t === 'Si') continue;
+        if (c < n1Cols) {
+          left.total++; if (t === 'P') left.P++; else if (t === 'B') left.B++;
+        } else if (c < n1Cols + pCols) {
+          mid.total++; if (t === 'P') mid.P++; else if (t === 'B') mid.B++;
+        } else {
+          right.total++; if (t === 'P') right.P++; else if (t === 'B') right.B++;
+        }
+      }
+    }
+    var sizeLeft = 6 * rows, sizeMid = 3 * rows, sizeRight = 6 * rows;
+    var tooManyLeft = left.total > Math.floor(sizeLeft * 0.25);
+    var tooManyMid = mid.total > Math.floor(sizeMid * 0.25);
+    var tooManyRight = right.total > Math.floor(sizeRight * 0.25);
+
+    var errors = [];
+    // Missing dopants in any region
+    if (left.total === 0) errors.push('Left N has no dopants');
+    if (mid.total === 0) errors.push('P has no dopants');
+    if (right.total === 0) errors.push('Right N has no dopants');
+    // Wrong dopant types in regions
+    if (left.B > 0) errors.push('Boron found in left N region');
+    if (right.B > 0) errors.push('Boron found in right N region');
+    if (mid.P > 0) errors.push('Phosphorus found in P region');
+    // Required placements present?
+    if (mid.B === 0) errors.push('No boron in P region');
+    if (left.P === 0) errors.push('No phosphorus in left N region');
+    if (right.P === 0) errors.push('No phosphorus in right N region');
+    // Excessive doping
+    var tooManyMsgs = [];
+    if (tooManyLeft) tooManyMsgs.push('Left N (' + left.total + '/' + sizeLeft + ')');
+    if (tooManyMid) tooManyMsgs.push('P (' + mid.total + '/' + sizeMid + ')');
+    if (tooManyRight) tooManyMsgs.push('Right N (' + right.total + '/' + sizeRight + ')');
+    if (tooManyMsgs.length) errors.push('Too many dopants in: ' + tooManyMsgs.join(', '));
+
+    if (errors.length === 0) {
+      return { ok: true, msg: 'This npn wafer will work!' };
+    } else {
+      return { ok: false, msg: 'Issue: ' + errors.join(' | ') };
+    }
+  };
+  window.checkNpnWafer = p.checkNpnWafer;
   initDopingMap();
   buildControls2();
   };
@@ -134,7 +187,7 @@ var npnSketch = function(p) {
           // Four electrons orbiting (phase shifted)
           var orbitR = atomR + 10;
           var phases = [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2];
-          p.fill(180);
+          p.fill(190, 110); // light grey with reduced opacity for regular electrons
           for (var k = 0; k < 4; k++) {
             var ang = t + phases[k];
             var ex = cx + orbitR * Math.cos(ang);
@@ -168,6 +221,12 @@ var npnSketch = function(p) {
   p.text('N', (x1 + x2) * 0.5, labelY);
   p.text('P', (x2 + x3) * 0.5, labelY);
   p.text('N', (x3 + x4) * 0.5, labelY);
+  // Labels centered horizontally above each rectangle
+  p.textAlign(p.CENTER, p.BOTTOM);
+  var labelYTop = y1 - 10; // small offset above rectangles
+  p.text('N', (x1 + x2) * 0.5, labelYTop);
+  p.text('P', (x2 + x3) * 0.5, labelYTop);
+  p.text('N', (x3 + x4) * 0.5, labelYTop);
   p.textStyle(p.NORMAL);
 
   // Snapshot grid geometry for snapping on drop
@@ -242,7 +301,8 @@ var npnSketch = function(p) {
           var uy = (my - gx.y1) / (gx.y2 - gx.y1);
           ux = Math.max(0.05, Math.min(0.95, ux));
           uy = Math.max(0.05, Math.min(0.95, uy));
-          freeElectrons.push({ region: regionIndex, ux: ux, uy: uy, vx: (Math.random()*0.02-0.01), vy: (Math.random()*0.02-0.01) });
+          // Lower initial velocities
+          freeElectrons.push({ region: regionIndex, ux: ux, uy: uy, vx: (Math.random()*0.004-0.002), vy: (Math.random()*0.004-0.002), bornAt: p.millis() });
         }
         // Spawn a hole only when placing B into a previously Si site
         if (dragType === 'B' && prev === 'Si') {
@@ -254,7 +314,8 @@ var npnSketch = function(p) {
           var uyb = (my - gx.y1) / (gx.y2 - gx.y1);
           uxb = Math.max(0.05, Math.min(0.95, uxb));
           uyb = Math.max(0.05, Math.min(0.95, uyb));
-          freeHoles.push({ region: regionIndexB, ux: uxb, uy: uyb, vx: (Math.random()*0.004-0.002), vy: (Math.random()*0.004-0.002) });
+          // Lower initial velocities
+          freeHoles.push({ region: regionIndexB, ux: uxb, uy: uyb, vx: (Math.random()*0.002-0.001), vy: (Math.random()*0.002-0.001), bornAt: p.millis() });
         }
       }
     }
@@ -266,23 +327,170 @@ var npnSketch = function(p) {
     if (!grid || freeElectrons.length === 0) return;
     p.push();
     p.noStroke();
-    p.fill(255, 210, 60); // golden color
-    var damp = 0.98;
+    p.fill(0, 255, 255);
+
+    // Global geometry
+    var totalW = grid.x4 - grid.x1;
+    var totalH = grid.y2 - grid.y1;
+
+    // Stability and interaction constants (gentle)
+    var damp = 0.992;
+    var baseMaxV = 0.01;
+    var maxA = 0.0015;
+  var kRep = 0.0010;     // e–e repulsion (local) [legacy]
+  var kRepG = 0.0008;    // e–e repulsion (global normalized across rectangles)
+    var kAttCg = 0.0008;   // e–h Coulomb-like (global normalized)
+    var kAttLg = 0.00012;  // e–h spring-like (global normalized)
+    var eps2Local = 0.001; // softening in local space
+    var eps2Global = 0.0003; // softening in global normalized space
+  var now = p.millis();
+  var delayMs = 4000;   // wander ~4s before forces
+  var rampMs = 150;     // quick ramp to full force
+
+    // Speed scaling: more electrons -> slower electrons
+    var N = freeElectrons.length;
+    var speedScale = 1 / (1 + 0.25 * Math.max(0, N - 1)); // 1, 0.8, 0.67, 0.57, ...
+    var maxV = baseMaxV * speedScale;
+
+    function regionBounds(region) {
+      var xL = region === 0 ? grid.x1 : (region === 1 ? grid.x2 : grid.x3);
+      var xR = region === 0 ? grid.x2 : (region === 1 ? grid.x3 : grid.x4);
+      return { xL: xL, xR: xR, y1: grid.y1, y2: grid.y2, w: xR - xL, h: totalH };
+    }
+    function toPixel(pos) {
+      var rb = regionBounds(pos.region);
+      return { x: rb.xL + pos.ux * rb.w, y: rb.y1 + pos.uy * rb.h };
+    }
+    function toGlobalNorm(px, py) {
+      return { gx: (px - grid.x1) / totalW, gy: (py - grid.y1) / totalH };
+    }
+
     for (var i = 0; i < freeElectrons.length; i++) {
       var e = freeElectrons[i];
-      // Random walk in normalized space
-      e.vx += (Math.random()*0.01 - 0.005);
-      e.vy += (Math.random()*0.01 - 0.005);
-      e.vx *= damp; e.vy *= damp;
+      var rbE = regionBounds(e.region);
+
+      var ax = 0, ay = 0;
+      var minHoleRg = Infinity;
+
+      // Compute electron position once in global normalized space
+      var ePix = toPixel(e);
+      var eg = toGlobalNorm(ePix.x, ePix.y);
+      var scaleXLocalFromGlobal = totalW / rbE.w; // convert global accel to local x units
+
+      // e–e repulsion across all rectangles (global normalized space)
+      for (var j = 0; j < freeElectrons.length; j++) {
+        if (i === j) continue;
+        var e2 = freeElectrons[j];
+        var e2Pix = toPixel(e2);
+        var e2g = toGlobalNorm(e2Pix.x, e2Pix.y);
+        var dxgEE = eg.gx - e2g.gx;
+        var dygEE = eg.gy - e2g.gy;
+        var r2gEE = dxgEE*dxgEE + dygEE*dygEE + eps2Global;
+        var rgEE = Math.sqrt(r2gEE);
+        var invRgEE = 1 / rgEE;
+        var invR3gEE = invRgEE * invRgEE * invRgEE;
+        var axgEE = kRepG * dxgEE * invR3gEE;
+        var aygEE = kRepG * dygEE * invR3gEE;
+        ax += axgEE * scaleXLocalFromGlobal;
+        ay += aygEE;
+      }
+
+      // e–h attraction across all rectangles (compute in global normalized space)
+      // (uses eg computed above)
+
+      for (var h = 0; h < freeHoles.length; h++) {
+        var hole = freeHoles[h];
+        var hPix = toPixel(hole);
+        var hg = toGlobalNorm(hPix.x, hPix.y);
+        var dxg = hg.gx - eg.gx;
+        var dyg = hg.gy - eg.gy;
+        var r2g = dxg*dxg + dyg*dyg + eps2Global;
+        var rg = Math.sqrt(r2g);
+        if (rg < minHoleRg) minHoleRg = rg;
+        var invRg = 1 / rg;
+        var invR3g = invRg * invRg * invRg;
+
+        // Proximity scaling to avoid bursts
+        var near = rg < 0.03 ? 0.4 : 1.0;
+
+        // Global Coulomb-like term then map to local
+        var axg = near * kAttCg * dxg * invR3g + kAttLg * dxg;
+        var ayg = near * kAttCg * dyg * invR3g + kAttLg * dyg;
+        ax += axg * scaleXLocalFromGlobal;
+        ay += ayg; // y scale is same across rectangles
+      }
+
+      // NEW: weak repulsion from orbiting "normal" electrons (same region only)
+      (function repelFromNormalElectrons(){
+        var tElect = p.millis() * 0.0012; // match Si orbit animation speed
+        var xLpix = rbE.xL, wPix = rbE.w, hPix = totalH;
+        var kRepN = 0.00005;  // further weakened repulsion from normal electrons
+        var eps2N = 0.002;    // increased softening to reduce near-field effect
+        for (var rr = 0; rr < grid.rows; rr++) {
+          for (var cc = 0; cc < grid.cols; cc++) {
+            var cx = grid.startX + cc * grid.spacing;
+            var regionIdx = (cx < grid.x2) ? 0 : (cx < grid.x3 ? 1 : 2);
+            if (regionIdx !== e.region) continue;
+            var cy = grid.startY + rr * grid.spacing;
+            var cellType = dopingMap[rr][cc];
+
+            if (cellType === 'Si') {
+              var orbitR = atomR + 10;
+              var phases = [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2];
+              for (var k = 0; k < 4; k++) {
+                var ang = tElect + phases[k];
+                var ex = cx + orbitR * Math.cos(ang);
+                var ey = cy + orbitR * Math.sin(ang);
+                var dxn = e.ux - (ex - grid.startX) / wPix;
+                var dyn = e.uy - (ey - grid.startY) / hPix;
+                var r2n = dxn*dxn + dyn*dyn + eps2N;
+                var invRn = 1 / Math.sqrt(r2n);
+                var invR3n = invRn * invRn * invRn;
+                ax += kRepN * dxn * invR3n;
+                ay += kRepN * dyn * invR3n;
+              }
+            }
+          }
+        }
+      })();
+
+  // Age-based force ramp: wander first, then engage forces smoothly
+  if (e.bornAt == null) e.bornAt = now; // default for older items
+  var age = now - e.bornAt;
+  var rf = Math.max(0, Math.min(1, (age - delayMs) / rampMs));
+  ax *= rf; ay *= rf;
+
+      // Minor jitter; smaller when near a hole
+      var jitter = minHoleRg < 0.03 ? 0.0002 : 0.0004;
+      e.vx += (Math.random()*2*jitter - jitter);
+      e.vy += (Math.random()*2*jitter - jitter);
+
+      // Cap total acceleration
+      var aMag = Math.hypot(ax, ay);
+      if (aMag > maxA) { ax *= maxA / aMag; ay *= maxA / aMag; }
+
+      // Integrate with damping
+      e.vx = (e.vx + ax) * damp;
+      e.vy = (e.vy + ay) * damp;
+
+      // Extra braking near a hole
+      if (minHoleRg < 0.03) { e.vx *= 0.9; e.vy *= 0.9; }
+
+      // Clamp velocities (scaled by electron count)
+      if (e.vx > maxV) e.vx = maxV; if (e.vx < -maxV) e.vx = -maxV;
+      if (e.vy > maxV) e.vy = maxV; if (e.vy < -maxV) e.vy = -maxV;
+
+      // Integrate position
       e.ux += e.vx; e.uy += e.vy;
-      // Bounce off 0..1 bounds with a small margin
+
+      // Bounds with gentle bounce
       if (e.ux < 0.02) { e.ux = 0.02; e.vx *= -0.8; }
       if (e.ux > 0.98) { e.ux = 0.98; e.vx *= -0.8; }
       if (e.uy < 0.02) { e.uy = 0.02; e.vy *= -0.8; }
       if (e.uy > 0.98) { e.uy = 0.98; e.vy *= -0.8; }
-      // Map normalized to current rectangle bounds
-      var xL = e.region === 0 ? grid.x1 : (e.region === 1 ? grid.x2 : grid.x3);
-      var xR = e.region === 0 ? grid.x2 : (e.region === 1 ? grid.x3 : grid.x4);
+
+      // Draw in pixel space
+      var xL = rbE.xL, xR = rbE.xR;
       var px = xL + e.ux * (xR - xL);
       var py = grid.y1 + e.uy * (grid.y2 - grid.y1);
       p.circle(px, py, 6);
@@ -293,43 +501,136 @@ var npnSketch = function(p) {
   function simulateAndDrawFreeHoles(p, grid) {
     if (!grid || freeHoles.length === 0) return;
     p.push();
-    var damp = 0.995; // much slower
-    var maxV = 0.003; // cap per-axis speed
+
+    var totalW = grid.x4 - grid.x1;
+    var totalH = grid.y2 - grid.y1;
+
+    // Gentle parameters for holes
+    var damp = 0.998;
+    var maxV = 0.0015;
+    var maxA = 0.0008;
+    var kAttCg = 0.0006;  // weaker than electrons
+    var kAttLg = 0.00008;
+    var eps2Global = 0.0003;
+    // Hole–hole repulsion (local normalized space)
+    var kRepH = 0.0007;
+    var eps2LocalH = 0.001;
+  var now = p.millis();
+  var delayMs = 4000;   // wander ~4s before forces
+  var rampMs = 150;     // quick ramp to full force
+
+    function regionBounds(region) {
+      var xL = region === 0 ? grid.x1 : (region === 1 ? grid.x2 : grid.x3);
+      var xR = region === 0 ? grid.x2 : (region === 1 ? grid.x3 : grid.x4);
+      return { xL: xL, xR: xR, y1: grid.y1, y2: grid.y2, w: xR - xL, h: totalH };
+    }
+    function toPixel(pos) {
+      var rb = regionBounds(pos.region);
+      return { x: rb.xL + pos.ux * rb.w, y: rb.y1 + pos.uy * rb.h };
+    }
+    function toGlobalNorm(px, py) {
+      return { gx: (px - grid.x1) / totalW, gy: (py - grid.y1) / totalH };
+    }
+
     for (var i = 0; i < freeHoles.length; i++) {
       var h = freeHoles[i];
-      // Gentle random walk
-      h.vx += (Math.random()*0.002 - 0.001);
-      h.vy += (Math.random()*0.002 - 0.001);
-      h.vx *= damp; h.vy *= damp;
+      var rbH = regionBounds(h.region);
+
+      var ax = 0, ay = 0;
+      var minElecRg = Infinity;
+
+      // Hole–hole repulsion within same region (local normalized)
+      for (var j = 0; j < freeHoles.length; j++) {
+        if (i === j) continue;
+        var h2 = freeHoles[j];
+        if (h2.region !== h.region) continue;
+        var dxh = h.ux - h2.ux;
+        var dyh = h.uy - h2.uy;
+        var r2h = dxh*dxh + dyh*dyh + eps2LocalH;
+        var invRh = 1 / Math.sqrt(r2h);
+        var invR3h = invRh * invRh * invRh;
+        ax += kRepH * dxh * invR3h;
+        ay += kRepH * dyh * invR3h;
+      }
+
+      var hPix = toPixel(h);
+      var hg = toGlobalNorm(hPix.x, hPix.y);
+      var scaleXLocalFromGlobal = totalW / rbH.w;
+
+      // Attract to all electrons across rectangles
+      for (var e = 0; e < freeElectrons.length; e++) {
+        var el = freeElectrons[e];
+        var ePix = toPixel(el);
+        var eg = toGlobalNorm(ePix.x, ePix.y);
+        var dxg = eg.gx - hg.gx;
+        var dyg = eg.gy - hg.gy;
+        var r2g = dxg*dxg + dyg*dyg + eps2Global;
+        var rg = Math.sqrt(r2g);
+        if (rg < minElecRg) minElecRg = rg;
+        var invRg = 1 / rg;
+        var invR3g = invRg * invRg * invRg;
+
+        var near = rg < 0.03 ? 0.45 : 1.0;
+
+        var axg = near * kAttCg * dxg * invR3g + kAttLg * dxg;
+        var ayg = near * kAttCg * dyg * invR3g + kAttLg * dyg;
+        ax += axg * scaleXLocalFromGlobal;
+        ay += ayg;
+      }
+
+  // Age-based force ramp
+  if (h.bornAt == null) h.bornAt = now;
+  var age = now - h.bornAt;
+  var rf = Math.max(0, Math.min(1, (age - delayMs) / rampMs));
+  ax *= rf; ay *= rf;
+
+      // Minor jitter, smaller when very close
+      var jitter = minElecRg < 0.03 ? 0.00015 : 0.0003;
+      h.vx += (Math.random()*2*jitter - jitter);
+      h.vy += (Math.random()*2*jitter - jitter);
+
+      // Cap acceleration
+      var aMag = Math.hypot(ax, ay);
+      if (aMag > maxA) { ax *= maxA / aMag; ay *= maxA / aMag; }
+
+      // Integrate with damping
+      h.vx = (h.vx + ax) * damp;
+      h.vy = (h.vy + ay) * damp;
+
+      // Extra braking near electrons
+      if (minElecRg < 0.03) { h.vx *= 0.9; h.vy *= 0.9; }
+
       // Clamp speeds
       if (h.vx > maxV) h.vx = maxV; if (h.vx < -maxV) h.vx = -maxV;
       if (h.vy > maxV) h.vy = maxV; if (h.vy < -maxV) h.vy = -maxV;
+
       h.ux += h.vx; h.uy += h.vy;
+
       // Bounds
       if (h.ux < 0.02) { h.ux = 0.02; h.vx *= -0.7; }
       if (h.ux > 0.98) { h.ux = 0.98; h.vx *= -0.7; }
       if (h.uy < 0.02) { h.uy = 0.02; h.vy *= -0.7; }
       if (h.uy > 0.98) { h.uy = 0.98; h.vy *= -0.7; }
-      // Map to rectangle
-      var xL = h.region === 0 ? grid.x1 : (h.region === 1 ? grid.x2 : grid.x3);
-      var xR = h.region === 0 ? grid.x2 : (h.region === 1 ? grid.x3 : grid.x4);
-      var px = xL + h.ux * (xR - xL);
+
+      // Draw
+      var px = rbH.xL + h.ux * rbH.w;
       var py = grid.y1 + h.uy * (grid.y2 - grid.y1);
-      // Render: black fill, golden stroke, slightly larger than electron
-      p.stroke(255, 210, 60);
+      p.push();
+      p.stroke(0, 255, 255); // cyan holes
       p.strokeWeight(2);
-      p.fill(0);
+      p.noFill();
       p.circle(px, py, 10);
+      p.pop();
     }
     p.pop();
   }
-
+// Helper inside sketch
   function pointInCircle(x, y, cx, cy, r) {
     var dx = x - cx, dy = y - cy; return (dx*dx + dy*dy) <= r*r;
   }
   // No rect hit-test needed any more (button moved to external controls)
 };
-
+// ...existing code...
 function drawDopantsOverlay(p, boxW, boxH){
   // Draw a semi-transparent white box with "Dopants:" and two atoms (P, B), centered at top
   var pad = 6; // tighter
@@ -377,7 +678,7 @@ function drawDopantsOverlay(p, boxW, boxH){
   var orbitRP = rP + 12;
   var orbitRB = rB + 12;
   p.noStroke();
-  p.fill(190);
+  p.fill(190, 110); // light grey with reduced opacity for overlay electrons
   for (var i = 0; i < 5; i++) {
     var ang = -t + i * (2 * Math.PI / 5);
     var ex = px + orbitRP * Math.cos(ang);
@@ -414,7 +715,7 @@ function drawDopant(p, type, x, y, placed) {
   p.text(spec.label, x, y + 1);
   p.textStyle(p.NORMAL);
   // electrons
-  p.fill(190);
+  p.fill(190, 110); // light grey with reduced opacity for dopant electrons
   var electronCount = (placed && type === 'P') ? 4 : spec.electrons;
   for (var i = 0; i < electronCount; i++) {
     var ang = -t + i * (2 * Math.PI / electronCount);
@@ -439,5 +740,25 @@ function buildControls2() {
   resetBtn.title = 'Remove all placed dopant atoms';
   resetBtn.addEventListener('click', function(){ if (window.clearNpnDopants) window.clearNpnDopants(); });
   container.appendChild(resetBtn);
+  // Check button
+  var checkBtn = document.createElement('button');
+  checkBtn.textContent = 'check ✓';
+  checkBtn.title = 'Validate dopant placement';
+  checkBtn.style.marginLeft = '12px';
+  container.appendChild(checkBtn);
+  // Result label
+  var resultSpan = document.createElement('span');
+  resultSpan.style.marginLeft = '12px';
+  resultSpan.style.color = '#ddd';
+  resultSpan.style.fontSize = '14px';
+  container.appendChild(resultSpan);
+  // Wire up click
+  checkBtn.addEventListener('click', function(){
+    if (window.checkNpnWafer) {
+      var res = window.checkNpnWafer();
+      resultSpan.textContent = res.msg;
+      resultSpan.style.color = res.ok ? '#00d084' : '#ff7070';
+    }
+  });
   container.__npnControlsBuilt = true;
 }

@@ -29,6 +29,11 @@ main {
   width: min(95vw, 1200px); /* constrain overall width */
 }
 
+/* Add extra space after the first canvas section before the second begins */
+#canvas-container-1 {
+  margin-bottom: 80px; /* increase gap to next section */
+}
+
 /* Ensure p5 canvas sits nicely as a block element */
 #canvas-container-1 canvas,
 #canvas-container-2 canvas,
