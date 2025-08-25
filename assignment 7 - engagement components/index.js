@@ -8,28 +8,23 @@ import { getDatabase, ref, set, push, onValue, off, update, remove } from "fireb
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBfUQ380DV8UyX3XAXcLD9YR3Xr1C7LgXI",
-  authDomain: "q-n-a-e84a1.firebaseapp.com",
-  databaseURL: "https://q-n-a-e84a1-default-rtdb.firebaseio.com",
-  projectId: "q-n-a-e84a1",
-  storageBucket: "q-n-a-e84a1.firebasestorage.app",
-  messagingSenderId: "1039224628624",
-  appId: "1:1039224628624:web:5963beec4197eb0ebdff15",
-  measurementId: "G-JL0Y6PHFJE"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-let analytics;
-try { analytics = getAnalytics(app); } catch (_) { /* analytics requires browser + allowed env */ }
-
-// Core SDKs
-const auth = getAuth(app);
-const firestore = getFirestore(app);
-const rtdb = getDatabase(app);
+// Config is provided by a local, git-ignored file that sets window.FIREBASE_CONFIG
+// This keeps keys out of the repo. See firebaseConfig.template.js for an example.
+let app; let analytics; let auth; let firestore; let rtdb;
+try {
+  const cfg = (typeof window !== 'undefined' && window.FIREBASE_CONFIG) ? window.FIREBASE_CONFIG : null;
+  if (!cfg || !cfg.apiKey) throw new Error('Missing FIREBASE_CONFIG');
+  // Initialize Firebase
+  app = initializeApp(cfg);
+  try { analytics = getAnalytics(app); } catch (_) { /* analytics requires browser + allowed env */ }
+  // Core SDKs
+  auth = getAuth(app);
+  firestore = getFirestore(app);
+  rtdb = getDatabase(app);
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.warn('Firebase not initialized:', e && e.message ? e.message : String(e));
+}
 
 // --- Realtime Database helpers ---
 async function writeData(path, value) { return set(ref(rtdb, path), value); }

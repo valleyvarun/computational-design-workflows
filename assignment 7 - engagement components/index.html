@@ -114,6 +114,8 @@
   <!-- ------------------------------------------------------------ -->
   <!-- jsPDF for generating the PDF copy locally -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" referrerpolicy="no-referrer"></script>
+  <!-- Local Firebase config (git-ignored). Create firebaseConfig.js from firebaseConfig.template.js -->
+  <script src="firebaseConfig.js"></script>
   <!-- Function URL (update if you deploy to a different region/name) -->
   <script>window.SURVEY_EMAIL_FUNCTION_URL = 'https://us-central1-q-n-a-e84a1.cloudfunctions.net/sendSurveyEmail';</script>
   <script type="module">
@@ -121,16 +123,11 @@
     import { getAnalytics, isSupported } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js';
     import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js';
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBfUQ380DV8UyX3XAXcLD9YR3Xr1C7LgXI",
-      authDomain: "q-n-a-e84a1.firebaseapp.com",
-      databaseURL: "https://q-n-a-e84a1-default-rtdb.firebaseio.com",
-      projectId: "q-n-a-e84a1",
-      storageBucket: "q-n-a-e84a1.firebasestorage.app",
-      messagingSenderId: "1039224628624",
-      appId: "1:1039224628624:web:5963beec4197eb0ebdff15",
-      measurementId: "G-JL0Y6PHFJE"
-    };
+    const firebaseConfig = (window && window.FIREBASE_CONFIG) || null;
+    if (!firebaseConfig || !firebaseConfig.apiKey) {
+      console.error('FIREBASE_CONFIG missing. Create assignment 7 - engagement components/firebaseConfig.js from firebaseConfig.template.js and reload.');
+      alert('Missing Firebase config. Please add firebaseConfig.js locally.');
+    }
 
     const app = initializeApp(firebaseConfig);
     try { if (await isSupported()) getAnalytics(app); } catch(_) {}

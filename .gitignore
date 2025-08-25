@@ -65,5 +65,8 @@ node_modules/
 # dotenv environment variables file
 .env
 
+# Local Firebase web config for Assignment 7 (keep out of git)
+assignment 7 - engagement components/firebaseConfig.js
+
 # dataconnect generated files
 .dataconnect
