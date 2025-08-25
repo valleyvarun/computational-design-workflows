@@ -7,8 +7,15 @@
 		// Hide placeholders if iframe has src
 		const iframe = box.querySelector('iframe');
 		const placeholder = box.querySelector('.placeholder');
-		if (iframe && iframe.getAttribute('src')) {
-			placeholder && (placeholder.style.display = 'none');
+		if (iframe) {
+			// Lazy load: promote data-src to src on demand
+			if (!iframe.getAttribute('src')) {
+				const ds = iframe.getAttribute('data-src');
+				if (ds) iframe.setAttribute('src', ds);
+			}
+			if (iframe.getAttribute('src')) {
+				placeholder && (placeholder.style.display = 'none');
+			}
 		}
 
 		box.classList.add('fullscreen');
@@ -26,9 +33,7 @@
 			if (full) h2.textContent = full;
 		}
 
-		const expandBtn = box.querySelector('.btn-expand');
 		const minimizeBtn = box.querySelector('.btn-minimize');
-		if (expandBtn) expandBtn.hidden = true;
 		if (minimizeBtn) minimizeBtn.hidden = false;
 	}
 
@@ -43,9 +48,16 @@
 			h2.textContent = box.dataset.titleOriginal;
 		}
 
-		const expandBtn = box.querySelector('.btn-expand');
+		// Unload iframe so it stops running in background
+		const iframe = box.querySelector('iframe');
+		const placeholder = box.querySelector('.placeholder');
+		const thumb = box.querySelector('.thumb');
+		if (iframe && iframe.getAttribute('src')) {
+			iframe.removeAttribute('src');
+		}
+		if (placeholder) placeholder.style.display = thumb ? 'none' : '';
+
 		const minimizeBtn = box.querySelector('.btn-minimize');
-		if (expandBtn) expandBtn.hidden = false;
 		if (minimizeBtn) minimizeBtn.hidden = true;
 	}
 
@@ -54,34 +66,34 @@
 	}
 
 	function onClick(e) {
-		const btn = e.target.closest('button');
-		if (!btn) return;
 		const box = e.target.closest('.box');
 		if (!box) return;
-		if (btn.classList.contains('btn-expand')) {
+		if (!box.classList.contains('fullscreen')) {
+			// Enter fullscreen when clicking anywhere on the box in grid view
 			collapseAll();
 			enterFullscreen(box);
-			return;
-		}
-		if (btn.classList.contains('btn-minimize')) {
-			exitFullscreen(box);
-			return;
+		} else {
+			// Only minimize when clicking the explicit minimize button
+			const btn = e.target.closest('.btn-minimize');
+			if (btn) exitFullscreen(box);
 		}
 	}
 
 	// Close fullscreen on Escape
-	function onKeydown(e) {
-		if (e.key === 'Escape') collapseAll();
-	}
+	function onKeydown(e) { /* Escape no-op to require button for minimize */ }
 
 	// Initialize: if iframe has src, hide placeholder
 	function init() {
 		$('.box').forEach(box => {
 			const iframe = box.querySelector('iframe');
+			const thumb = box.querySelector('.thumb');
 			const placeholder = box.querySelector('.placeholder');
-			if (iframe && iframe.getAttribute('src')) {
+			if ((iframe && (iframe.getAttribute('src') || iframe.getAttribute('data-src'))) || thumb) {
 				if (placeholder) placeholder.style.display = 'none';
 			}
+			// Ensure minimize button is visible only in fullscreen
+			const minBtn = box.querySelector('.btn-minimize');
+			if (minBtn) minBtn.hidden = true;
 		});
 	}
 

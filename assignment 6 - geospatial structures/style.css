@@ -1,0 +1,125 @@
+/* Import Google Fonts - this loads the Roboto font family from Google's servers */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+/* Style the entire body of the webpage */
+body {
+  font-family: 'Roboto', sans-serif;  /* Set the font to Roboto, with sans-serif as backup */
+  background-color: #0b0b0b;          /* Match main page dark background */
+  color: #eaeaea;                     /* Light text on dark background */
+  margin: 0;                          /* Remove default spacing around the body */
+  padding: 0;                         /* Remove default internal spacing */
+  overflow-x: hidden;                 /* Prevent horizontal scrollbar */
+}
+
+/* Keep only minimal base styles for the sketch page */
+html, body { height: 100%; }
+main {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+#canvas-container-1,
+#canvas-container-2,
+#canvas-container-3 {
+  margin: 24px auto;
+  display: flex;             /* center canvas horizontally */
+  justify-content: center;
+  min-height: 100vh;       /* ensure container allows tall canvas */
+  width: min(95vw, 1200px); /* constrain overall width */
+}
+
+/* Add extra space after the first canvas section before the second begins */
+#canvas-container-1 {
+  margin-bottom: 80px; /* increase gap to next section */
+}
+
+/* Ensure p5 canvas sits nicely as a block element */
+#canvas-container-1 canvas,
+#canvas-container-2 canvas,
+#canvas-container-3 canvas {
+  display: block;
+  width: 100% !important;   /* fill container width */
+  height: auto !important;  /* scale height accordingly */
+}
+
+/* Mapbox map should fill container width and keep a good aspect ratio */
+#map {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 60vh;
+  border: 1px solid #fff;
+}
+
+/* Restore section title styling used by the page */
+.section-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 40px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  width: min(95vw, 1200px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Restore paragraph styling used by the page */
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: inherit;            /* use body light text color */
+  width: min(95vw, 1200px);  /* align with canvas width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Controls panel styling */
+.controls {
+  width: min(95vw, 1200px);
+  margin: 0 auto 12px auto;
+  padding: 12px 14px;
+  background: #121212;
+  border: 1px solid #222;
+  border-radius: 10px;
+  color: #eaeaea;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 16px;
+}
+
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.controls input[type="range"] {
+  flex: 1;
+}
+
+/* Compact layout for NPN controls */
+#controls-2.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: none;
+  padding: 6px 10px;
+}
+
+#controls-2.controls button {
+  width: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  line-height: 1.2;
+  border: 1px solid #ddd;
+  background: #ffffff;
+  color: #000000;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#controls-2.controls button:hover {
+  border-color: #bbb;
+}

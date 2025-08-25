@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assignment 6 — Geospatial Structures</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Mapbox GL JS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <!-- Turf.js for bbox utilities (optional; we also have a fallback) -->
+  <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+</head>
+<body>
+  <main>
+    <div class="section-title">Proposed site for Semiconductor Electronics Tech Park in Mysore</div>
+    <p>This Mapbox canvas displays the Hebbal Industrial Area in Mysore, India, highlighting the major industries surrounding my selected site. The site itself, chosen for the development of a Semiconductor Electronics Technology Park, is also marked on the map. <code>hia-site.geojson</code>.</p>
+    <div id="canvas-container-1">
+      <div id="map" aria-label="Mapbox map"></div>
+      <div id="map-msg" style="margin-top:8px;color:#bbb;font-size:14px;"></div>
+    </div>
+  </main>
+
+  <script src="mapbox.js"></script>
+</body>
+    <script>
+      // Mapbox access token (provided)
+      window.MAPBOX_TOKEN = 'pk.eyJ1IjoidmFydW4tY2RwIiwiYSI6ImNtZXFibjI0ZDA5NmQya3B1dmFmbjJnMGwifQ._OXDR7R-StkIW4RzeHu2lw';
+    </script>
