@@ -1,0 +1,417 @@
+/* Import Google Fonts - this loads the Roboto font family from Google's servers */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+/* Style the entire body of the webpage */
+body {
+  font-family: 'Roboto', sans-serif;  /* Set the font to Roboto, with sans-serif as backup */
+  background-color: #0b0b0b;          /* Dark background */
+  color: #eaeaea;                     /* Light text */
+  margin: 0;                          /* Remove default spacing around the body */
+  padding: 0;                         /* Remove default internal spacing */
+}
+
+/* Utility */
+.hidden { display: none !important; }
+
+/* Header removed in this assignment */
+
+/* Style the main content area */
+main {
+  max-width: 800px;                   /* Limit the maximum width to 800 pixels */
+  margin: 60px auto;                  /* Add 60px top/bottom margin, center horizontally */
+  padding: 0 20px;                    /* Add 20px left/right padding, no top/bottom */
+}
+
+/* Style the project year/date */
+.project-meta {
+  font-size: 14px;                    /* Set font size to 14 pixels */
+  color: #9aa4b2;                     /* Muted text */
+  margin-bottom: 8px;                 /* Add 8 pixels of space below this element */
+}
+
+/* Style the main project title */
+.project-title {
+  font-size: 24px;                    /* Set font size to 24 pixels (larger) */
+  font-weight: 400;                   /* Set font weight to normal (not bold) */
+  margin-bottom: 4px;                 /* Add 4 pixels of space below this element */
+}
+
+/* Style the project subtitle */
+.project-subtitle {
+  font-size: 16px;                    /* Set font size to 16 pixels */
+  color: #9aa4b2;                     /* Muted */
+  margin-bottom: 24px;                /* Add 24 pixels of space below this element */
+}
+
+/* Style the advisor information */
+.advisor {
+  font-size: 14px;                    /* Set font size to 14 pixels */
+  margin-bottom: 40px;                /* Add 40 pixels of space below this element */
+  color: #c7c7c7;                     /* Light gray for dark */
+}
+
+/* Style section titles (like "Abstract", "Motivation") */
+.section-title {
+  font-weight: 700;                   /* Make the text bold */
+  text-transform: uppercase;          /* Convert text to all capital letters */
+  margin-top: 40px;                   /* Add 40 pixels of space above this element */
+  margin-bottom: 12px;                /* Add 12 pixels of space below this element */
+  font-size: 14px;                    /* Set font size to 14 pixels */
+  color: #d6d6d6;                     /* Slightly brighter for headings */
+}
+
+/* Style all paragraph elements */
+p {
+  font-size: 16px;                    /* Set font size to 16 pixels */
+  line-height: 1.6;                   /* Set space between lines to 1.6 times the font size */
+  margin-bottom: 24px;                /* Add 24 pixels of space below each paragraph */
+  color: #eaeaea;                     /* Light text for dark mode */
+}
+
+/* Element Groups - containers for related elements */
+.element-group {
+  margin-bottom: 40px;                /* Space between element groups */
+  padding: 24px;                      /* Internal spacing */
+  border: 1px solid #222;             /* Subtle border for dark */
+  border-radius: 8px;                 /* Rounded corners */
+  background-color: #141414;          /* Dark card background */
+}
+
+/* Button Styles */
+button {
+  background-color: #2a2a2a;          /* Dark button */
+  color: #eaeaea;                     /* Light text */
+  border: none;                       /* No border */
+  padding: 12px 24px;                 /* Internal spacing */
+  font-size: 14px;                    /* Font size */
+  font-weight: 400;                   /* Font weight */
+  cursor: pointer;                    /* Hand cursor on hover */
+  margin-right: 12px;                 /* Space between buttons */
+  margin-bottom: 12px;                /* Space below buttons */
+  transition: all 0.2s ease;          /* Smooth transitions */
+  border-radius: 4px;                 /* Rounded corners */
+  font-family: 'Roboto', sans-serif;  /* Consistent font */
+}
+
+button:hover {
+  background-color: #3a3a3a;          /* Lighter on hover */
+  transform: translateY(-1px);        /* Slight lift effect */
+}
+
+button:active {
+  transform: translateY(0);           /* Return to normal on click */
+}
+
+/* Button variants */
+.btn-secondary {
+  background-color: #444;             /* Medium dark */
+}
+
+.btn-secondary:hover {
+  background-color: #666;             /* Lighter on hover */
+}
+
+.btn-outline {
+  background-color: transparent;      /* Transparent background */
+  color: #eaeaea;                     /* Light text */
+  border: 1px solid #eaeaea;          /* Light border */
+}
+
+.btn-outline:hover {
+  background-color: #eaeaea;          /* Invert on hover */
+  color: #111;                        /* Dark text on hover */
+}
+
+.btn-disabled {
+  background-color: #333;             /* Dark disabled */
+  color: #777;                        /* Muted text */
+  cursor: not-allowed;                /* Not allowed cursor */
+  opacity: 0.6;                       /* Reduced opacity */
+}
+
+.btn-disabled:hover {
+  background-color: #333;             /* No change on hover */
+  transform: none;                    /* No transform */
+}
+
+/* Input Group Styles */
+.input-group {
+  margin-bottom: 20px;                /* Space between input groups */
+}
+
+.input-group label {
+  display: block;                     /* Block display */
+  margin-bottom: 8px;                 /* Space below label */
+  font-size: 14px;                    /* Font size */
+  font-weight: 500;                   /* Medium font weight */
+  color: #ccc;                        /* Light label */
+}
+
+/* Text Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;                        /* Full width */
+  padding: 12px 16px;                 /* Internal spacing */
+  border: 1px solid #333;             /* Dark border */
+  border-radius: 4px;                 /* Rounded corners */
+  font-size: 14px;                    /* Font size */
+  font-family: 'Roboto', sans-serif;  /* Consistent font */
+  background-color: #111;             /* Dark field */
+  color: #eaeaea;                     /* Light text */
+  transition: border-color 0.2s ease; /* Smooth border transition */
+  box-sizing: border-box;             /* Include padding in width */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;                      /* Remove default outline */
+  border-color: #7b61ff;              /* Accent focus */
+  box-shadow: 0 0 0 2px rgba(123, 97, 255, 0.25); /* Subtle accent ring */
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+textarea::placeholder {
+  color: #777;                        /* Dark-mode placeholder */
+}
+
+/* Textarea specific styles */
+textarea {
+  min-height: 100px;                  /* Minimum height */
+  resize: vertical;                   /* Only vertical resize */
+  line-height: 1.5;                   /* Line spacing */
+}
+
+/* Slider Styles */
+.slider-group {
+  margin-bottom: 20px;                /* Space between slider groups */
+}
+
+.slider-group label {
+  display: block;                     /* Block display */
+  margin-bottom: 8px;                 /* Space below label */
+  font-size: 14px;                    /* Font size */
+  font-weight: 500;                   /* Medium font weight */
+  color: #ccc;                        /* Light label */
+}
+
+input[type="range"] {
+  width: 100%;                        /* Full width */
+  height: 6px;                        /* Height of the slider track */
+  background: #333;                   /* Dark track */
+  border-radius: 3px;                 /* Rounded track */
+  outline: none;                      /* Remove outline */
+  -webkit-appearance: none;           /* Remove default webkit appearance */
+  appearance: none;                   /* Remove default appearance */
+  margin-bottom: 8px;                 /* Space below slider */
+}
+
+/* Slider thumb (the draggable part) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;           /* Remove default appearance */
+  appearance: none;                   /* Remove default appearance */
+  width: 20px;                        /* Width of thumb */
+  height: 20px;                       /* Height of thumb */
+  background: #eaeaea;                /* Light thumb */
+  border-radius: 50%;                 /* Circular thumb */
+  cursor: pointer;                    /* Hand cursor */
+  border: 2px solid #111;             /* Dark outline */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Stronger shadow */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;                        /* Width of thumb */
+  height: 20px;                       /* Height of thumb */
+  background: #eaeaea;                /* Light thumb */
+  border-radius: 50%;                 /* Circular thumb */
+  cursor: pointer;                    /* Hand cursor */
+  border: 2px solid #111;             /* Dark outline */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Stronger shadow */
+}
+
+.slider-value {
+  display: inline-block;              /* Inline block display */
+  background-color: #222;             /* Dark chip */
+  color: #eaeaea;                     /* Light text */
+  padding: 4px 8px;                   /* Internal spacing */
+  border-radius: 4px;                 /* Rounded corners */
+  font-size: 12px;                    /* Small font size */
+  font-weight: 500;                   /* Medium font weight */
+  min-width: 30px;                    /* Minimum width */
+  text-align: center;                 /* Center text */
+}
+
+/* Checkbox and Radio Styles */
+.checkbox-group,
+.radio-group {
+  margin-bottom: 20px;                /* Space between groups */
+}
+
+/* Lay out radio options horizontally with spacing */
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.checkbox-label,
+.radio-label {
+  display: flex;                      /* Flex display */
+  align-items: center;                /* Center items vertically */
+  margin-bottom: 12px;                /* Space below each label */
+  cursor: pointer;                    /* Hand cursor */
+  font-size: 14px;                    /* Font size */
+  color: #ccc;                        /* Light label */
+}
+
+.checkbox-label input[type="checkbox"],
+.radio-label input[type="radio"] {
+  display: none;                      /* Hide default inputs */
+}
+
+/* Custom checkbox */
+.checkmark {
+  width: 18px;                        /* Width of checkbox */
+  height: 18px;                       /* Height of checkbox */
+  border: 2px solid #555;             /* Dark border */
+  border-radius: 3px;                 /* Slightly rounded corners */
+  margin-right: 12px;                 /* Space to the right */
+  position: relative;                 /* For positioning the check mark */
+  background-color: #111;             /* Dark background */
+  transition: all 0.2s ease;          /* Smooth transitions */
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background-color: #7b61ff;         /* Accent when checked */
+  border-color: #7b61ff;             /* Accent border */
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';                       /* Check mark */
+  position: absolute;                 /* Absolute positioning */
+  top: 50%;                           /* Center vertically */
+  left: 50%;                          /* Center horizontally */
+  transform: translate(-50%, -50%);   /* Perfect centering */
+  color: #fff;                        /* White check mark */
+  font-size: 12px;                    /* Font size */
+  font-weight: bold;                  /* Bold font weight */
+}
+
+/* Custom radio button */
+.radio-mark {
+  width: 18px;                        /* Width of radio button */
+  height: 18px;                       /* Height of radio button */
+  border: 2px solid #555;             /* Dark border */
+  border-radius: 50%;                 /* Circular */
+  margin-right: 12px;                 /* Space to the right */
+  position: relative;                 /* For positioning the dot */
+  background-color: #111;             /* Dark background */
+  transition: all 0.2s ease;          /* Smooth transitions */
+  display: inline-block;              /* Ensure width/height apply */
+  box-sizing: border-box;             /* Include border in size */
+  flex: 0 0 18px;                     /* Prevent flex stretching */
+  line-height: 0;                     /* Avoid line-height affecting shape */
+  min-width: 18px;                    /* Prevent shrink */
+  min-height: 18px;                   /* Prevent shrink */
+  aspect-ratio: 1 / 1;                /* Keep perfect circle */
+}
+
+.radio-label input[type="radio"]:checked + .radio-mark { border-color: #7b61ff; }
+
+.radio-label input[type="radio"]:checked + .radio-mark::after {
+  content: '';                        /* Empty content */
+  position: absolute;                 /* Absolute positioning */
+  top: 50%;                           /* Center vertically */
+  left: 50%;                          /* Center horizontally */
+  transform: translate(-50%, -50%);   /* Perfect centering */
+  width: 8px;                         /* Width of dot */
+  height: 8px;                        /* Height of dot */
+  background-color: #7b61ff;          /* Accent dot */
+  border-radius: 50%;                 /* Circular dot */
+}
+
+/* Select Dropdown Styles */
+.select-group {
+  margin-bottom: 20px;                /* Space below select group */
+}
+
+.select-group label {
+  display: block;                     /* Block display */
+  margin-bottom: 8px;                 /* Space below label */
+  font-size: 14px;                    /* Font size */
+  font-weight: 500;                   /* Medium font weight */
+  color: #ccc;                        /* Light label */
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23c4c9d4' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;                /* Extra padding for arrow */
+}
+
+/* Output Display Styles */
+#output-display {
+  background-color: #121212;          /* Dark surface */
+  border: 1px solid #222;             /* Dark border */
+  border-radius: 8px;                 /* Rounded corners */
+  padding: 20px;                      /* Internal spacing */
+  margin-top: 20px;                   /* Space above */
+  font-family: 'Roboto Mono', monospace; /* Monospace font for code-like display */
+  font-size: 14px;                    /* Font size */
+  line-height: 1.6;                   /* Line spacing */
+  color: #eaeaea;                     /* Light text */
+}
+
+#output-display p {
+  margin-bottom: 8px;                 /* Space between paragraphs */
+}
+
+#output-display p:last-child {
+  margin-bottom: 0;                   /* No margin on last paragraph */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  main {
+    padding: 0 16px;                  /* Less padding on mobile */
+    margin: 40px auto;                /* Less margin on mobile */
+  }
+  
+  .element-group {
+    padding: 16px;                    /* Less padding on mobile */
+  }
+  
+  button {
+    width: 100%;                      /* Full width buttons on mobile */
+    margin-right: 0;                  /* No right margin */
+    margin-bottom: 8px;               /* Less bottom margin */
+  }
+}
+
+/* In-section Next button */
+.btn-next {
+  background-color: #7b61ff;         /* Purple accent */
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 12px;                   /* Space above button */
+  box-shadow: 0 8px 24px rgba(123, 97, 255, 0.25);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-next:hover { background-color: #6a53f0; transform: translateY(-1px); }
+.btn-next:active { transform: translateY(0); }

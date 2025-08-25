@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!-- This tells the browser this is an HTML5 document - always include this at the top -->
+<html lang="en">
+<!-- The html tag is the root element that contains everything on the page -->
+<!-- lang="en" tells the browser this page is in English -->
+
+<head>
+  <!-- The head section contains information about the page, not visible content -->
+
+
+  <!-- ------------------------------------------------------------ -->
+  <!-- Load p5.js library from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <!-- This loads the p5.js library which provides functions for creating graphics and animations -->
+  <!-- ------------------------------------------------------------ -->
+
+  
+  <meta charset="UTF-8">
+  <!-- This sets the character encoding to UTF-8, which supports special characters and emojis -->
+  
+  <title>HTML Elements</title>
+  <!-- This is the title that appears in the browser tab and bookmarks -->
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- This loads the Roboto font from Google Fonts for use on our page -->
+  
+  <link rel="stylesheet" href="style.css">
+  <!-- This links our CSS file to style the page - the href points to our style.css file -->
+</head>
+
+<body>
+  <!-- The body contains all the visible content that users will see on the page -->
+
+  <main>
+    <!-- The main tag contains the primary content of the page -->
+  <div class="section-title">A Survey on Experiencing Industry</div>
+  <p>This survey aims to understand how people experience industries through its architectural spaces—such as visits to factories, research facilities, or even seeing them in the cityscape—and how such experiences may influence awareness, understanding, and career interests.</p>
+  <p>Your input will contribute to research focused on designing more accessible, educational and inspiring industrial environments.</p>
+  <img src="survey-images/industry-collage.png" alt="Collage of industry spaces and architecture" loading="lazy" style="display:block; width:100%; height:auto; border-radius:8px; margin:12px 0 24px;" />
+  
+  <div class="element-group">
+    <div class="input-group">
+      <label for="survey-name">Name:</label>
+      <input type="text" id="survey-name" placeholder="Your full name">
+    </div>
+    <div class="input-group">
+      <label for="survey-email">Email Id:</label>
+      <input type="email" id="survey-email" placeholder="you@example.com">
+    </div>
+    <div class="input-group">
+      <label for="survey-location">Where do you live?</label>
+      <input type="text" id="survey-location" placeholder="City, Country">
+    </div>
+    <div class="input-group select-group">
+      <label for="survey-age">Age:</label>
+      <select id="survey-age">
+        <option value="" disabled selected>Select age range</option>
+        <option value="0-13">0-13</option>
+        <option value="13-18">13-18</option>
+        <option value="18-25">18-25</option>
+        <option value="25-30">25-30</option>
+        <option value="30-40">30-40</option>
+        <option value="40-50">40-50</option>
+        <option value="50+">50+</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="survey-profession">What is your current profession or field of study?</label>
+      <input type="text" id="survey-profession" placeholder="Profession or field">
+    </div>
+    <div class="input-group">
+      <label>Do you work or have worked in a role based in a factory, laboratory, production facility, R&amp;D center or similar environments?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-industry-role" id="survey-industry-role-yes" value="yes">
+          <span class="radio-mark"></span>
+          Yes
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-industry-role" id="survey-industry-role-no" value="no">
+          <span class="radio-mark"></span>
+          No
+        </label>
+      </div>
+  <button class="btn-next" type="button">Next</button>
+    </div>
+  </div>
+
+  <!-- Additional Questions (hidden until Next) -->
+  <div id="additional-questions" class="element-group hidden">
+    <div class="section-title">Additional Questions</div>
+    <div class="input-group">
+      <label for="q1">Dummy Question 1</label>
+      <input type="text" id="q1" placeholder="Type your answer...">
+    </div>
+    <div class="input-group">
+      <label for="q2">Dummy Question 2</label>
+      <textarea id="q2" placeholder="Type your answer..." rows="4"></textarea>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <button id="btn-submit" class="btn-next" type="button">Submit</button>
+      <span id="submit-status" class="project-subtitle hidden">A copy of your response has been sent to your email id.</span>
+    </div>
+  </div>
+
+  </main>
+  <!-- End of main content area -->
+  
+
+  <!-- ------------------------------------------------------------ -->
+
+  <!-- Removed unused ui-elements.js to prevent runtime errors on this page -->
+
+  <!-- ------------------------------------------------------------ -->
+  <!-- jsPDF for generating the PDF copy locally -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-XPlv4GkCw+WgdgA4u2n+5Z/7CZtQwV0KnZgTiZB8mMeowxrdkybfb4a9Lg8zZlME1f5HfVdHhQFQJd8u3G7G7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Function URL (update if you deploy to a different region/name) -->
+  <script>window.SURVEY_EMAIL_FUNCTION_URL = 'https://us-central1-q-n-a-e84a1.cloudfunctions.net/sendSurveyEmail';</script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js';
+    import { getAnalytics, isSupported } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js';
+    import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBfUQ380DV8UyX3XAXcLD9YR3Xr1C7LgXI",
+      authDomain: "q-n-a-e84a1.firebaseapp.com",
+      databaseURL: "https://q-n-a-e84a1-default-rtdb.firebaseio.com",
+      projectId: "q-n-a-e84a1",
+      storageBucket: "q-n-a-e84a1.firebasestorage.app",
+      messagingSenderId: "1039224628624",
+      appId: "1:1039224628624:web:5963beec4197eb0ebdff15",
+      measurementId: "G-JL0Y6PHFJE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    try { if (await isSupported()) getAnalytics(app); } catch(_) {}
+    const db = getDatabase(app);
+
+    const btnNext = document.querySelector('.btn-next');
+    const nextSection = document.getElementById('additional-questions');
+    btnNext?.addEventListener('click', () => {
+      // Reveal additional section and remove Next
+      nextSection?.classList.remove('hidden');
+      btnNext.remove();
+      // Smooth scroll into view
+      nextSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Submit handler writes all fields
+    const btnSubmit = document.getElementById('btn-submit');
+    const submitStatus = document.getElementById('submit-status');
+
+    async function sendEmailWithPdfCopy(toEmail, payload, pdfDataUrl) {
+      // Replace this URL after deploy with your region + project id function endpoint
+      // Example: https://<region>-<project-id>.cloudfunctions.net/sendSurveyEmail
+      const functionUrl = window.SURVEY_EMAIL_FUNCTION_URL || '';
+      if (!functionUrl) return { ok: false, error: 'Function URL missing' };
+      const body = {
+        to: toEmail,
+        subject: 'Your Survey Response — A Survey on Experiencing Industry',
+        text: 'Thanks for your submission. A PDF copy is attached.',
+        html: '<p>Thanks for your submission. A PDF copy is attached.</p>',
+  pdfDataUrl,
+  replyTo: payload.email
+      };
+      try {
+        const r = await fetch(functionUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await r.json().catch(() => ({}));
+        return { ok: r.ok && data && data.ok === true, status: r.status, data };
+      } catch (e) {
+        return { ok: false, error: (e && e.message) || String(e) };
+      }
+    }
+    btnSubmit?.addEventListener('click', async () => {
+      const name = (document.getElementById('survey-name')?.value || '').trim();
+      const email = (document.getElementById('survey-email')?.value || '').trim();
+      const location = (document.getElementById('survey-location')?.value || '').trim();
+      const ageRange = (document.getElementById('survey-age')?.value || '').trim();
+      const profession = (document.getElementById('survey-profession')?.value || '').trim();
+      const industryRole = document.querySelector('input[name="survey-industry-role"]:checked')?.value || '';
+      const q1 = (document.getElementById('q1')?.value || '').trim();
+      const q2 = (document.getElementById('q2')?.value || '').trim();
+
+      const payload = {
+        name, email, location, ageRange, profession, industryRole,
+        q1, q2,
+        createdAt: Date.now(),
+        userAgent: navigator.userAgent
+      };
+
+      const original = btnSubmit.textContent;
+      btnSubmit.disabled = true; btnSubmit.textContent = 'Submitting…';
+      try {
+        const r = push(ref(db, 'surveyResponses'));
+        await set(r, payload);
+        // Generate a neat PDF copy for the user
+  let pdfDataUrl = '';
+  try {
+          const { jsPDF } = window.jspdf || {};
+          if (jsPDF) {
+            const doc = new jsPDF({ unit: 'pt' });
+            const line = (t, y) => { doc.text(t, 40, y); };
+            let y = 60;
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(16); line('Survey Response — A Survey on Experiencing Industry', y); y += 24;
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(12);
+            const rows = [
+              ['Name', name],
+              ['Email', email],
+              ['Location', location],
+              ['Age Range', ageRange],
+              ['Profession/Field', profession],
+              ['Industry Role (Y/N)', industryRole],
+              ['Dummy Q1', q1],
+              ['Dummy Q2', q2],
+              ['Submitted At', new Date(payload.createdAt).toLocaleString()]
+            ];
+            rows.forEach(([k, v]) => {
+              const text = `${k}: ${v || '-'}`;
+              const split = doc.splitTextToSize(text, 515);
+              split.forEach((ln) => { if (y > 760) { doc.addPage(); y = 60; } line(ln, y); y += 18; });
+              y += 6;
+            });
+            pdfDataUrl = doc.output('datauristring');
+            doc.save('survey-response.pdf');
+          }
+        } catch (e) { console.warn('PDF generation failed:', e); }
+
+        btnSubmit.textContent = 'Submitted ✓';
+        // Attempt to send email; show visible status either way
+        const result = await sendEmailWithPdfCopy(email, payload, pdfDataUrl);
+        if (result && result.ok) {
+          submitStatus?.classList.remove('hidden');
+          submitStatus && (submitStatus.textContent = 'A copy of your response has been sent to your email id.');
+        } else {
+          const msg = result && (result.error || (result.data && (result.data.error || JSON.stringify(result.data))) || 'Email send failed');
+          if (submitStatus) {
+            submitStatus.textContent = `Email not sent: ${msg}`;
+            submitStatus.classList.remove('hidden');
+            submitStatus.style.color = '#ff6b6b';
+          }
+          console.warn('Email send failed:', result);
+        }
+      } catch (err) {
+        console.error('Submit failed', err);
+        alert('Could not submit your response. Please try again.');
+        btnSubmit.textContent = original;
+        btnSubmit.disabled = false;
+        return;
+      }
+      // Optionally clear inputs
+      // document.querySelector('main')?.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
+    });
+  </script>
+</body>
+<!-- End of body - all visible content goes above this line -->
+</html>
+<!-- End of HTML document -->
