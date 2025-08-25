@@ -99,7 +99,7 @@
     </div>
     <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
       <button id="btn-submit" class="btn-next" type="button">Submit</button>
-      <span id="submit-status" class="project-subtitle hidden">A copy of your response has been sent to your email id.</span>
+  <span id="submit-status" class="project-subtitle hidden">A copy of your response has been sent to your email id. If it’s not in your Inbox, please check Spam or Promotions.</span>
     </div>
   </div>
 
@@ -113,7 +113,7 @@
 
   <!-- ------------------------------------------------------------ -->
   <!-- jsPDF for generating the PDF copy locally -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-XPlv4GkCw+WgdgA4u2n+5Z/7CZtQwV0KnZgTiZB8mMeowxrdkybfb4a9Lg8zZlME1f5HfVdHhQFQJd8u3G7G7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" referrerpolicy="no-referrer"></script>
   <!-- Function URL (update if you deploy to a different region/name) -->
   <script>window.SURVEY_EMAIL_FUNCTION_URL = 'https://us-central1-q-n-a-e84a1.cloudfunctions.net/sendSurveyEmail';</script>
   <script type="module">
@@ -150,17 +150,18 @@
     const btnSubmit = document.getElementById('btn-submit');
     const submitStatus = document.getElementById('submit-status');
 
-    async function sendEmailWithPdfCopy(toEmail, payload, pdfDataUrl) {
+  async function sendEmailWithPdfCopy(toEmail, payload, pdfDataUrl, pdfBase64) {
       // Replace this URL after deploy with your region + project id function endpoint
       // Example: https://<region>-<project-id>.cloudfunctions.net/sendSurveyEmail
       const functionUrl = window.SURVEY_EMAIL_FUNCTION_URL || '';
       if (!functionUrl) return { ok: false, error: 'Function URL missing' };
-      const body = {
+    const body = {
         to: toEmail,
         subject: 'Your Survey Response — A Survey on Experiencing Industry',
         text: 'Thanks for your submission. A PDF copy is attached.',
         html: '<p>Thanks for your submission. A PDF copy is attached.</p>',
   pdfDataUrl,
+  pdfBase64,
   replyTo: payload.email
       };
       try {
@@ -199,6 +200,7 @@
         await set(r, payload);
         // Generate a neat PDF copy for the user
   let pdfDataUrl = '';
+  let pdfBase64 = '';
   try {
           const { jsPDF } = window.jspdf || {};
           if (jsPDF) {
@@ -225,16 +227,17 @@
               y += 6;
             });
             pdfDataUrl = doc.output('datauristring');
+            try { pdfBase64 = (pdfDataUrl && pdfDataUrl.includes(',')) ? pdfDataUrl.split(',')[1] : ''; } catch(_) { pdfBase64 = ''; }
             doc.save('survey-response.pdf');
           }
         } catch (e) { console.warn('PDF generation failed:', e); }
 
         btnSubmit.textContent = 'Submitted ✓';
         // Attempt to send email; show visible status either way
-        const result = await sendEmailWithPdfCopy(email, payload, pdfDataUrl);
+  const result = await sendEmailWithPdfCopy(email, payload, pdfDataUrl, pdfBase64);
         if (result && result.ok) {
           submitStatus?.classList.remove('hidden');
-          submitStatus && (submitStatus.textContent = 'A copy of your response has been sent to your email id.');
+          submitStatus && (submitStatus.textContent = 'A copy of your response has been sent to your email id. If it’s not in your Inbox, please check Spam or Promotions.');
         } else {
           const msg = result && (result.error || (result.data && (result.data.error || JSON.stringify(result.data))) || 'Email send failed');
           if (submitStatus) {

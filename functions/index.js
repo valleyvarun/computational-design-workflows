@@ -60,7 +60,7 @@ async function sendSurveyEmailHandler(req, res) {
   }
 
   try {
-    const {to, subject, text, html, pdfDataUrl} = req.body || {};
+    const {to, subject, text, html, pdfDataUrl, pdfBase64} = req.body || {};
 
     if (!to || !(text || html)) {
       return res.status(400).json({ok: false, error: "Missing 'to' or body"});
@@ -95,12 +95,17 @@ async function sendSurveyEmailHandler(req, res) {
     }
 
     // Attach PDF if provided
-    if (pdfDataUrl) {
-      const base64 = pdfDataUrl.split(",")[1];
+    let base64 = null;
+    if (typeof pdfBase64 === "string" && pdfBase64.length > 0) {
+      base64 = pdfBase64;
+    } else if (typeof pdfDataUrl === "string" && pdfDataUrl.includes(",")) {
+      base64 = pdfDataUrl.split(",")[1];
+    }
+    if (base64) {
       msg.attachments = [
         {
           content: base64,
-          filename: "submission.pdf",
+          filename: "survey-response.pdf",
           type: "application/pdf",
           disposition: "attachment",
         },
