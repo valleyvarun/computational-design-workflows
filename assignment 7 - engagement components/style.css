@@ -77,6 +77,43 @@ p {
   background-color: #141414;          /* Dark card background */
 }
 
+/* Collapsible container */
+.collapsible .collapsible-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #2a2a2a;
+  margin-bottom: 16px;
+}
+
+.collapsible .collapsible-title {
+  font-weight: 600;
+  color: #d6d6d6;
+}
+
+.collapsible .chevron {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  border-right: 2px solid #aaa;
+  border-bottom: 2px solid #aaa;
+  transform: rotate(45deg); /* default: expanded (down) */
+  transition: transform 0.2s ease;
+  margin-right: 4px;
+}
+
+.collapsible[aria-collapsed="true"] .chevron,
+.collapsible.collapsed .chevron {
+  transform: rotate(-45deg); /* side arrow */
+}
+
+.collapsible .collapsible-content.collapsed {
+  display: none;
+}
+
 /* Button Styles */
 button {
   background-color: #2a2a2a;          /* Dark button */
@@ -136,7 +173,7 @@ button:active {
 
 /* Input Group Styles */
 .input-group {
-  margin-bottom: 20px;                /* Space between input groups */
+  margin-bottom: 36px;                /* Space between questions */
 }
 
 .input-group label {
@@ -340,7 +377,7 @@ input[type="range"]::-moz-range-thumb {
 
 /* Select Dropdown Styles */
 .select-group {
-  margin-bottom: 20px;                /* Space below select group */
+  margin-bottom: 36px;                /* Space below select group (match question spacing) */
 }
 
 .select-group label {
@@ -415,3 +452,75 @@ select {
 
 .btn-next:hover { background-color: #6a53f0; transform: translateY(-1px); }
 .btn-next:active { transform: translateY(0); }
+
+/* Section-specific spacing */
+#additional-questions .section-title {
+  margin-bottom: 36px;                /* Extra space before first question */
+}
+
+/* Concept card styles */
+.concept-card {
+  border: 1px solid #222;
+  background-color: #101010;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0 12px;
+}
+
+.concept-title {
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.concept-image {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  margin: 8px 0 12px;
+}
+
+.concept-desc {
+  color: #cfcfcf;
+  margin: 6px 0 8px;
+}
+
+/* Star rating (5 stars) */
+.star-rating {
+  display: inline-flex;
+  flex-direction: row-reverse; /* to allow hover to fill from left to right visually */
+  gap: 4px;
+}
+
+.star-rating input[type="radio"] { display: none; }
+
+.star-rating label {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: inline-block;
+  background: none;
+  position: relative;
+}
+
+/* Draw star via SVG background for crispness on dark */
+.star-rating label::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23aaaaaa' d='m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: 0.45;
+  transition: opacity .15s ease, transform .15s ease;
+}
+
+/* Hover and checked states turn stars bright */
+.star-rating label:hover::before,
+.star-rating label:hover ~ label::before { opacity: 0.85; }
+
+.star-rating input[type="radio"]:checked ~ label::before { opacity: 1; }
+
+/* Keyboard focus ring for accessibility */
+.star-rating label:focus-within::before { outline: 2px solid #7b61ff; outline-offset: 2px; }

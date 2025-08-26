@@ -1,56 +1,52 @@
 <!DOCTYPE html>
-<!-- This tells the browser this is an HTML5 document - always include this at the top -->
 <html lang="en">
-<!-- The html tag is the root element that contains everything on the page -->
-<!-- lang="en" tells the browser this page is in English -->
 
 <head>
-  <!-- The head section contains information about the page, not visible content -->
-
-
-  <!-- ------------------------------------------------------------ -->
-  <!-- Load p5.js library from CDN -->
+  <!-- Libraries and metadata -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
-  <!-- This loads the p5.js library which provides functions for creating graphics and animations -->
-  <!-- ------------------------------------------------------------ -->
-
   
   <meta charset="UTF-8">
-  <!-- This sets the character encoding to UTF-8, which supports special characters and emojis -->
   
   <title>HTML Elements</title>
-  <!-- This is the title that appears in the browser tab and bookmarks -->
   
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  <!-- This loads the Roboto font from Google Fonts for use on our page -->
   
+  <!-- Page styles -->
   <link rel="stylesheet" href="style.css">
-  <!-- This links our CSS file to style the page - the href points to our style.css file -->
 </head>
 
 <body>
-  <!-- The body contains all the visible content that users will see on the page -->
-
   <main>
-    <!-- The main tag contains the primary content of the page -->
+  <!-- title and introduction -->
   <div class="section-title">A Survey on Experiencing Industry</div>
   <p>This survey aims to understand how people experience industries through its architectural spaces—such as visits to factories, research facilities, or even seeing them in the cityscape—and how such experiences may influence awareness, understanding, and career interests.</p>
   <p>Your input will contribute to research focused on designing more accessible, educational and inspiring industrial environments.</p>
   <img src="survey-images/industry-collage.png" alt="Collage of industry spaces and architecture" loading="lazy" style="display:block; width:100%; height:auto; border-radius:8px; margin:12px 0 24px;" />
   
-  <div class="element-group">
+  <!-- Section 1: Basic respondent information -->
+  <div id="section1" class="element-group collapsible">
+    <div id="section1-toggle" class="collapsible-toggle" role="button" aria-expanded="true" aria-controls="section1-content" tabindex="0">
+      <span class="chevron" aria-hidden="true"></span>
+      <span class="collapsible-title">Basic information</span>
+    </div>
+    <div id="section1-content" class="collapsible-content">
+    <!-- Name -->
     <div class="input-group">
       <label for="survey-name">Name:</label>
-      <input type="text" id="survey-name" placeholder="Your full name">
+  <input type="text" id="survey-name" placeholder="Your full name" required>
     </div>
+    
+    <!-- Email -->
     <div class="input-group">
       <label for="survey-email">Email Id:</label>
-      <input type="email" id="survey-email" placeholder="you@example.com">
+  <input type="email" id="survey-email" placeholder="you@example.com" required>
     </div>
+    <!-- Location -->
     <div class="input-group">
       <label for="survey-location">Where do you live?</label>
       <input type="text" id="survey-location" placeholder="City, Country">
     </div>
+    <!-- Age (select) -->
     <div class="input-group select-group">
       <label for="survey-age">Age:</label>
       <select id="survey-age">
@@ -64,10 +60,12 @@
         <option value="50+">50+</option>
       </select>
     </div>
+    <!-- Profession/field -->
     <div class="input-group">
       <label for="survey-profession">What is your current profession or field of study?</label>
       <input type="text" id="survey-profession" placeholder="Profession or field">
     </div>
+    <!-- Radio: works in industry role -->
     <div class="input-group">
       <label>Do you work or have worked in a role based in a factory, laboratory, production facility, R&amp;D center or similar environments?</label>
       <div class="radio-group">
@@ -82,180 +80,460 @@
           No
         </label>
       </div>
-  <button class="btn-next" type="button">Next</button>
+  <!-- Button: reveals the next section -->
+  <button id="btn-next-1" class="btn-next" type="button">Next</button>
+    </div>
     </div>
   </div>
 
-  <!-- Additional Questions (hidden until Next) -->
-  <div id="additional-questions" class="element-group hidden">
-    <div class="section-title">Additional Questions</div>
-    <div class="input-group">
-      <label for="q1">Dummy Question 1</label>
-      <input type="text" id="q1" placeholder="Type your answer...">
+  <div id="additional-questions" class="element-group collapsible hidden" aria-collapsed="false">
+    <div id="section2-toggle" class="collapsible-toggle" role="button" aria-expanded="true" aria-controls="section2-content" tabindex="0">
+      <span class="chevron" aria-hidden="true"></span>
+      <span class="collapsible-title">Exposure and Impressions of Industry</span>
     </div>
+    <div id="section2-content" class="collapsible-content">
+    <!-- Section 2: Exposure and Impressions of Industry (hidden until Next) -->
+    <div class="section-title">Exposure and Impressions of Industry</div>
+    <!-- Q1. Radio: visited factory/industrial/R&D in person -->
     <div class="input-group">
-      <label for="q2">Dummy Question 2</label>
-      <textarea id="q2" placeholder="Type your answer..." rows="4"></textarea>
+      <label>1. Have you ever visited a factory, industrial facility, or R&amp;D laboratory in person?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-visit-experience" id="survey-visit-more-than-once" value="More than once">
+          <span class="radio-mark"></span>
+          More than once
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-visit-experience" id="survey-visit-once" value="Once">
+          <span class="radio-mark"></span>
+          Once
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-visit-experience" id="survey-visit-no" value="No">
+          <span class="radio-mark"></span>
+          No
+        </label>
+      </div>
     </div>
+    <!-- Q2. Short text: facilities visited and where -->
+    <div class="input-group">
+      <label for="visit-facilities">2. Which industrial facilities have you visited and where?</label>
+      <input type="text" id="visit-facilities" placeholder="e.g., Steel plant in Jamshedpur; Pharma R&D lab in Hyderabad">
+    </div>
+    <!-- Q3. Radio: school/college trips as student -->
+    <div class="input-group">
+      <label>3. Have you ever gone on a school or college trip to an industrial or research facility as a student?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-school-trip" id="survey-school-trip-several" value="Several times">
+          <span class="radio-mark"></span>
+          Several times
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-school-trip" id="survey-school-trip-couple" value="A couple times">
+          <span class="radio-mark"></span>
+          A couple times
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-school-trip" id="survey-school-trip-once" value="Once">
+          <span class="radio-mark"></span>
+          Once
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-school-trip" id="survey-school-trip-never" value="Never">
+          <span class="radio-mark"></span>
+          Never
+        </label>
+      </div>
+    </div>
+    <!-- Q4. Checkboxes: exposure levels (+ free-text for Other) -->
+    <div class="input-group">
+      <label>4. What level of access or exposure did you get during the majority of these visits?</label>
+      <div class="checkbox-group" style="display:flex; flex-direction:column; gap:8px;">
+        <label class="radio-label">
+          <input type="checkbox" name="survey-exposure-levels" value="Observed from a distance or behind glass">
+          <span class="radio-mark"></span>
+          Observed from a distance or behind glass
+        </label>
+        <label class="radio-label">
+          <input type="checkbox" name="survey-exposure-levels" value="Toured selected areas under supervision">
+          <span class="radio-mark"></span>
+          Toured selected areas under supervision
+        </label>
+        <label class="radio-label">
+          <input type="checkbox" name="survey-exposure-levels" value="Interacted with staff or saw machinery up close">
+          <span class="radio-mark"></span>
+          Interacted with staff or saw machinery up close
+        </label>
+        <label class="radio-label">
+          <input type="checkbox" name="survey-exposure-levels" value="Not allowed inside, only saw exhibits">
+          <span class="radio-mark"></span>
+          Not allowed inside, only saw exhibits
+        </label>
+        <label class="radio-label">
+          <input type="checkbox" name="survey-exposure-levels" value="Was allowed to use the tools/equipment/machinery and participate in their work">
+          <span class="radio-mark"></span>
+          Was allowed to use the tools/equipment/machinery and participate in their work
+        </label>
+        <label class="radio-label">
+          <input type="checkbox" name="survey-exposure-levels" value="None">
+          <span class="radio-mark"></span>
+          None
+        </label>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <label class="radio-label" style="margin:0;">
+            <input type="checkbox" id="exposure-other" name="survey-exposure-levels" value="Other">
+            <span class="radio-mark"></span>
+            Other
+          </label>
+          <input type="text" id="exposure-other-text" placeholder="Please specify" style="flex:1; min-width:220px;">
+        </div>
+      </div>
+    </div>
+    <!-- Q5. Radio: special arrangements during visits (with optional text for Other) -->
+    <div class="input-group">
+      <label>5. During any visits to industrial or research facilities, were any special arrangements made for visitors (such as halting work, restricting access, or preparing demonstrations)?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-special-arrangements" id="q5-yes" value="Yes, special arrangements were made">
+          <span class="radio-mark"></span>
+          Yes, special arrangements were made
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-special-arrangements" id="q5-no" value="No, it was more of a daily occurrence to accommodate visitors">
+          <span class="radio-mark"></span>
+          No, it was more of a daily occurrence to accommodate visitors
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-special-arrangements" id="q5-maybe" value="Maybe, or minor arrangements were made">
+          <span class="radio-mark"></span>
+          Maybe, or minor arrangements were made
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-special-arrangements" id="q5-dont-know" value="I don’t know">
+          <span class="radio-mark"></span>
+          I don’t know
+        </label>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <label class="radio-label" style="margin:0;">
+            <input type="radio" name="survey-special-arrangements" id="q5-other" value="Other">
+            <span class="radio-mark"></span>
+            Other
+          </label>
+          <input type="text" id="q5-other-text" placeholder="Please specify" style="flex:1; min-width:220px;" disabled>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6. Radio: disturbance to workers/operations (Q6) -->
+    <div class="input-group">
+      <label>6. To your knowledge, did your visit cause any disturbance to the people working there or disrupt normal operations?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-disturbance" id="q6-yes" value="Yes">
+          <span class="radio-mark"></span>
+          Yes
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-disturbance" id="q6-no" value="No">
+          <span class="radio-mark"></span>
+          No
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-disturbance" id="q6-maybe" value="Maybe">
+          <span class="radio-mark"></span>
+          Maybe
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-disturbance" id="q6-dont-know" value="I don’t know">
+          <span class="radio-mark"></span>
+          I don’t know
+        </label>
+      </div>
+    </div>
+    <!-- Q7. Radio: ease of visiting/access (Q7) -->
+    <div class="input-group">
+      <label>7. If you have visited such places, how easy or difficult was it to get access or permission?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-access-ease" id="q7-very-easy" value="Very easy">
+          <span class="radio-mark"></span>
+          Very easy
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-access-ease" id="q7-somewhat-easy" value="Somewhat easy">
+          <span class="radio-mark"></span>
+          Somewhat easy
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-access-ease" id="q7-difficult" value="Difficult">
+          <span class="radio-mark"></span>
+          Difficult
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-access-ease" id="q7-very-difficult" value="Very difficult">
+          <span class="radio-mark"></span>
+          Very difficult
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-access-ease" id="q7-never-tried" value="Never tried">
+          <span class="radio-mark"></span>
+          Never tried
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-access-ease" id="q7-dont-know" value="Do not know">
+          <span class="radio-mark"></span>
+          Do not know
+        </label>
+      </div>
+    </div>
+    <!-- Q8. Radio: casual visit outside school/work (Q8) -->
+    <div class="input-group">
+      <label>8. Have you ever casually tried to visit an industrial facility on your own, outside of school or work?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-casual-visit" id="q8-yes" value="Yes">
+          <span class="radio-mark"></span>
+          Yes
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-casual-visit" id="q8-no" value="No">
+          <span class="radio-mark"></span>
+          No
+        </label>
+      </div>
+    </div>
+    <!-- Q9. Radio: where you noticed industrial spaces (Q9, with Other text) -->
+    <div class="input-group">
+      <label>9. Where do you remember most seeing or noticing industrial spaces? (select the most relevant only)</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-where-noticed" id="q9-city" value="In your city or neighborhood">
+          <span class="radio-mark"></span>
+          In your city or neighborhood
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-where-noticed" id="q9-commute" value="While commuting or travelling">
+          <span class="radio-mark"></span>
+          While commuting or travelling
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-where-noticed" id="q9-movies" value="In movies or science fiction">
+          <span class="radio-mark"></span>
+          In movies or science fiction
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-where-noticed" id="q9-books" value="In books or magazines">
+          <span class="radio-mark"></span>
+          In books or magazines
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-where-noticed" id="q9-youtube" value="On YouTube or social media">
+          <span class="radio-mark"></span>
+          On YouTube or social media
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-where-noticed" id="q9-not-much" value="I haven’t noticed them much">
+          <span class="radio-mark"></span>
+          I haven’t noticed them much
+        </label>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <label class="radio-label" style="margin:0;">
+            <input type="radio" name="survey-where-noticed" id="q9-other" value="Other">
+            <span class="radio-mark"></span>
+            Other
+          </label>
+          <input type="text" id="q9-other-text" placeholder="Please specify" style="flex:1; min-width:220px;" disabled>
+        </div>
+      </div>
+    </div>
+    <!-- Q10. Radio: curiosity to explore (Q10) -->
+    <div class="input-group">
+  <label>10.  Have you ever felt curious to learn in detail how a product you use or consume is made, and to see the place where it is made?</label>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="survey-curiosity" id="q10-often" value="Yes, I’ve often been curious">
+          <span class="radio-mark"></span>
+          Yes, I’ve often been curious
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-curiosity" id="q10-sometimes" value="Yes, sometimes">
+          <span class="radio-mark"></span>
+          Yes, sometimes
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-curiosity" id="q10-rarely" value="Rarely">
+          <span class="radio-mark"></span>
+          Rarely
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="survey-curiosity" id="q10-never" value="No, never">
+          <span class="radio-mark"></span>
+          No, never
+        </label>
+      </div>
+    </div>
+
+    <!-- Short text: two-word association for "industry" (Q11) -->
+    <div class="input-group">
+      <label for="q11-industry-words">11. In one or two words, how would you describe the image, idea or feeling that the word “industry” brings to your mind?</label>
+      <input type="text" id="q11-industry-words" placeholder="e.g., Futuristic; Noisy; Innovation">
+    </div>
+
+    <!-- Next to Section 3 -->
     <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <button id="btn-next-2" class="btn-next" type="button">Next</button>
+    </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Design concepts and final submission -->
+  <div id="section3" class="element-group collapsible hidden" aria-collapsed="false">
+    <div id="section3-toggle" class="collapsible-toggle" role="button" aria-expanded="true" aria-controls="section3-content" tabindex="0">
+      <span class="chevron" aria-hidden="true"></span>
+      <span class="collapsible-title">Design Concepts for Experiencing Industry through Architecture</span>
+    </div>
+    <div id="section3-content" class="collapsible-content">
+    <p>This section presents a series of architectural ideas aimed at making industrial spaces more visible, accessible, and engaging to the public.</p>
+    <p>For each idea, please review the accompanying image and description. Then, rate how effective you believe the idea would be in making industry more welcoming, educational, and publicly engaging.</p>
+
+    <!-- Concept 1 -->
+    <div class="concept-card">
+      <div class="concept-title">1. Bridge Tube Walkway (Independent Public Viewing Zone)</div>
+      <img class="concept-image" src="survey-images/img-c1.png" alt="Concept image: Bridge Tube Walkway" loading="lazy" />
+      <p class="concept-desc">An enclosed, elevated or side-mounted walkway that allows visitors to visually observe operations inside the facility without entering the work zone. It requires no permits or supervision and allows full independence within a controlled space.</p>
+
+      <div class="input-group">
+        <label>How effective is this idea?</label>
+        <div class="star-rating" role="radiogroup" aria-label="Rate effectiveness out of 5">
+          <input type="radio" id="c1-star5" name="concept1-rating" value="5" />
+          <label for="c1-star5" title="5 stars" aria-label="5 stars"></label>
+          <input type="radio" id="c1-star4" name="concept1-rating" value="4" />
+          <label for="c1-star4" title="4 stars" aria-label="4 stars"></label>
+          <input type="radio" id="c1-star3" name="concept1-rating" value="3" />
+          <label for="c1-star3" title="3 stars" aria-label="3 stars"></label>
+          <input type="radio" id="c1-star2" name="concept1-rating" value="2" />
+          <label for="c1-star2" title="2 stars" aria-label="2 stars"></label>
+          <input type="radio" id="c1-star1" name="concept1-rating" value="1" />
+          <label for="c1-star1" title="1 star" aria-label="1 star"></label>
+        </div>
+      </div>
+    </div>
+    
+      <!-- Concept 2 -->
+      <div class="concept-card">
+        <div class="concept-title">2. Public Exhibition at Facility Entry</div>
+        <img class="concept-image" src="survey-images/img-c2.png" alt="Concept image: Public Exhibition at Facility Entry" loading="lazy" />
+        <p class="concept-desc">A permanent exhibition area near the entrance that explains the processes, products, and societal relevance of the industry—designed for casual visitors, students, or guided tours.</p>
+        <div class="input-group">
+          <label>How effective is this idea?</label>
+          <div class="star-rating" role="radiogroup" aria-label="Rate effectiveness out of 5">
+            <input type="radio" id="c2-star5" name="concept2-rating" value="5" />
+            <label for="c2-star5" title="5 stars" aria-label="5 stars"></label>
+            <input type="radio" id="c2-star4" name="concept2-rating" value="4" />
+            <label for="c2-star4" title="4 stars" aria-label="4 stars"></label>
+            <input type="radio" id="c2-star3" name="concept2-rating" value="3" />
+            <label for="c2-star3" title="3 stars" aria-label="3 stars"></label>
+            <input type="radio" id="c2-star2" name="concept2-rating" value="2" />
+            <label for="c2-star2" title="2 stars" aria-label="2 stars"></label>
+            <input type="radio" id="c2-star1" name="concept2-rating" value="1" />
+            <label for="c2-star1" title="1 star" aria-label="1 star"></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Concept 3 -->
+      <div class="concept-card">
+        <div class="concept-title">3. Training Centre Overlooking Operational Areas</div>
+        <img class="concept-image" src="survey-images/img-c3.png" alt="Concept image: Training Centre Overlooking Operational Areas" loading="lazy" />
+        <p class="concept-desc">A learning or orientation space integrated within the facility that has visual access to research labs or manufacturing zones—offering students or trainees a firsthand look into real-time industrial work.</p>
+        <div class="input-group">
+          <label>How effective is this idea?</label>
+          <div class="star-rating" role="radiogroup" aria-label="Rate effectiveness out of 5">
+            <input type="radio" id="c3-star5" name="concept3-rating" value="5" />
+            <label for="c3-star5" title="5 stars" aria-label="5 stars"></label>
+            <input type="radio" id="c3-star4" name="concept3-rating" value="4" />
+            <label for="c3-star4" title="4 stars" aria-label="4 stars"></label>
+            <input type="radio" id="c3-star3" name="concept3-rating" value="3" />
+            <label for="c3-star3" title="3 stars" aria-label="3 stars"></label>
+            <input type="radio" id="c3-star2" name="concept3-rating" value="2" />
+            <label for="c3-star2" title="2 stars" aria-label="2 stars"></label>
+            <input type="radio" id="c3-star1" name="concept3-rating" value="1" />
+            <label for="c3-star1" title="1 star" aria-label="1 star"></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Concept 4 -->
+      <div class="concept-card">
+        <div class="concept-title">4. Contrasting Nature with Industry</div>
+        <img class="concept-image" src="survey-images/img-c4.png" alt="Concept image: Contrasting Nature with Industry" loading="lazy" />
+        <p class="concept-desc">Incorporating green elements such as landscaped courtyards, water features, and green walls within and around the facility creates a striking contrast between nature and industry. This approach helps make the environment more welcoming, promotes well-being, and reduces visual and psychological strain. (Image shown is Paramit's Factory in a Forest by Design Unit Architects)</p>
+        <div class="input-group">
+          <label>How effective is this idea?</label>
+          <div class="star-rating" role="radiogroup" aria-label="Rate effectiveness out of 5">
+            <input type="radio" id="c4-star5" name="concept4-rating" value="5" />
+            <label for="c4-star5" title="5 stars" aria-label="5 stars"></label>
+            <input type="radio" id="c4-star4" name="concept4-rating" value="4" />
+            <label for="c4-star4" title="4 stars" aria-label="4 stars"></label>
+            <input type="radio" id="c4-star3" name="concept4-rating" value="3" />
+            <label for="c4-star3" title="3 stars" aria-label="3 stars"></label>
+            <input type="radio" id="c4-star2" name="concept4-rating" value="2" />
+            <label for="c4-star2" title="2 stars" aria-label="2 stars"></label>
+            <input type="radio" id="c4-star1" name="concept4-rating" value="1" />
+            <label for="c4-star1" title="1 star" aria-label="1 star"></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Concept 5 -->
+      <div class="concept-card">
+        <div class="concept-title">5. Iconic Landmark Architecture</div>
+        <img class="concept-image" src="survey-images/img-c5.png" alt="Concept image: Iconic Landmark Architecture" loading="lazy" />
+        <p class="concept-desc">Designing part of the facility—such as the entrance tower, auditorium, or public zone—with a bold, sculptural form to make the building a recognizable landmark and spark public curiosity and pride.</p>
+        <div class="input-group">
+          <label>How effective is this idea?</label>
+          <div class="star-rating" role="radiogroup" aria-label="Rate effectiveness out of 5">
+            <input type="radio" id="c5-star5" name="concept5-rating" value="5" />
+            <label for="c5-star5" title="5 stars" aria-label="5 stars"></label>
+            <input type="radio" id="c5-star4" name="concept5-rating" value="4" />
+            <label for="c5-star4" title="4 stars" aria-label="4 stars"></label>
+            <input type="radio" id="c5-star3" name="concept5-rating" value="3" />
+            <label for="c5-star3" title="3 stars" aria-label="3 stars"></label>
+            <input type="radio" id="c5-star2" name="concept5-rating" value="2" />
+            <label for="c5-star2" title="2 stars" aria-label="2 stars"></label>
+            <input type="radio" id="c5-star1" name="concept5-rating" value="1" />
+            <label for="c5-star1" title="1 star" aria-label="1 star"></label>
+          </div>
+        </div>
+      </div>
+
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top: 8px;">
+      <button id="btn-next-3" class="btn-next" type="button">Next</button>
+    </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Feedback and final submission -->
+  <div id="section4" class="element-group hidden">
+    <div class="section-title">Section 4 — Feedback</div>
+    <div class="slider-group">
+      <label for="survey-enjoyment">Thanks for completing the survey! How much did you enjoy the experience of filling it out?</label>
+      <input type="range" id="survey-enjoyment" min="0" max="10" step="1" value="5" />
+      <span class="slider-value" id="enjoyment-value">5</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top: 8px;">
       <button id="btn-submit" class="btn-next" type="button">Submit</button>
-  <span id="submit-status" class="project-subtitle hidden">A copy of your response has been sent to your email id. If it’s not in your Inbox, please check Spam or Promotions.</span>
+      <span id="submit-status" class="project-subtitle hidden">A copy of your response has been sent to your email id. If it’s not in your Inbox, please check Spam or Promotions.</span>
     </div>
   </div>
 
   </main>
-  <!-- End of main content area -->
-  
-
-  <!-- ------------------------------------------------------------ -->
-
-  <!-- Removed unused ui-elements.js to prevent runtime errors on this page -->
-
-  <!-- ------------------------------------------------------------ -->
-  <!-- jsPDF for generating the PDF copy locally -->
+  <!-- Scripts: PDF library, Firebase config, environment, and main module -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" referrerpolicy="no-referrer"></script>
-  <!-- Local Firebase config (git-ignored). Create firebaseConfig.js from firebaseConfig.template.js -->
   <script src="firebaseConfig.js"></script>
-  <!-- Function URL (update if you deploy to a different region/name) -->
-  <script>window.SURVEY_EMAIL_FUNCTION_URL = 'https://us-central1-q-n-a-e84a1.cloudfunctions.net/sendSurveyEmail';</script>
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js';
-    import { getAnalytics, isSupported } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js';
-    import { getDatabase, ref, push, set } from 'https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js';
-
-    const firebaseConfig = (window && window.FIREBASE_CONFIG) || null;
-    if (!firebaseConfig || !firebaseConfig.apiKey) {
-      console.error('FIREBASE_CONFIG missing. Create assignment 7 - engagement components/firebaseConfig.js from firebaseConfig.template.js and reload.');
-      alert('Missing Firebase config. Please add firebaseConfig.js locally.');
-    }
-
-    const app = initializeApp(firebaseConfig);
-    try { if (await isSupported()) getAnalytics(app); } catch(_) {}
-    const db = getDatabase(app);
-
-    const btnNext = document.querySelector('.btn-next');
-    const nextSection = document.getElementById('additional-questions');
-    btnNext?.addEventListener('click', () => {
-      // Reveal additional section and remove Next
-      nextSection?.classList.remove('hidden');
-      btnNext.remove();
-      // Smooth scroll into view
-      nextSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-
-    // Submit handler writes all fields
-    const btnSubmit = document.getElementById('btn-submit');
-    const submitStatus = document.getElementById('submit-status');
-
-  async function sendEmailWithPdfCopy(toEmail, payload, pdfDataUrl, pdfBase64) {
-      // Replace this URL after deploy with your region + project id function endpoint
-      // Example: https://<region>-<project-id>.cloudfunctions.net/sendSurveyEmail
-      const functionUrl = window.SURVEY_EMAIL_FUNCTION_URL || '';
-      if (!functionUrl) return { ok: false, error: 'Function URL missing' };
-    const body = {
-        to: toEmail,
-        subject: 'Your Survey Response — A Survey on Experiencing Industry',
-        text: 'Thanks for your submission. A PDF copy is attached.',
-        html: '<p>Thanks for your submission. A PDF copy is attached.</p>',
-  pdfDataUrl,
-  pdfBase64,
-  replyTo: payload.email
-      };
-      try {
-        const r = await fetch(functionUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-        const data = await r.json().catch(() => ({}));
-        return { ok: r.ok && data && data.ok === true, status: r.status, data };
-      } catch (e) {
-        return { ok: false, error: (e && e.message) || String(e) };
-      }
-    }
-    btnSubmit?.addEventListener('click', async () => {
-      const name = (document.getElementById('survey-name')?.value || '').trim();
-      const email = (document.getElementById('survey-email')?.value || '').trim();
-      const location = (document.getElementById('survey-location')?.value || '').trim();
-      const ageRange = (document.getElementById('survey-age')?.value || '').trim();
-      const profession = (document.getElementById('survey-profession')?.value || '').trim();
-      const industryRole = document.querySelector('input[name="survey-industry-role"]:checked')?.value || '';
-      const q1 = (document.getElementById('q1')?.value || '').trim();
-      const q2 = (document.getElementById('q2')?.value || '').trim();
-
-      const payload = {
-        name, email, location, ageRange, profession, industryRole,
-        q1, q2,
-        createdAt: Date.now(),
-        userAgent: navigator.userAgent
-      };
-
-      const original = btnSubmit.textContent;
-      btnSubmit.disabled = true; btnSubmit.textContent = 'Submitting…';
-      try {
-        const r = push(ref(db, 'surveyResponses'));
-        await set(r, payload);
-        // Generate a neat PDF copy for the user
-  let pdfDataUrl = '';
-  let pdfBase64 = '';
-  try {
-          const { jsPDF } = window.jspdf || {};
-          if (jsPDF) {
-            const doc = new jsPDF({ unit: 'pt' });
-            const line = (t, y) => { doc.text(t, 40, y); };
-            let y = 60;
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(16); line('Survey Response — A Survey on Experiencing Industry', y); y += 24;
-            doc.setFont('helvetica', 'normal'); doc.setFontSize(12);
-            const rows = [
-              ['Name', name],
-              ['Email', email],
-              ['Location', location],
-              ['Age Range', ageRange],
-              ['Profession/Field', profession],
-              ['Industry Role (Y/N)', industryRole],
-              ['Dummy Q1', q1],
-              ['Dummy Q2', q2],
-              ['Submitted At', new Date(payload.createdAt).toLocaleString()]
-            ];
-            rows.forEach(([k, v]) => {
-              const text = `${k}: ${v || '-'}`;
-              const split = doc.splitTextToSize(text, 515);
-              split.forEach((ln) => { if (y > 760) { doc.addPage(); y = 60; } line(ln, y); y += 18; });
-              y += 6;
-            });
-            pdfDataUrl = doc.output('datauristring');
-            try { pdfBase64 = (pdfDataUrl && pdfDataUrl.includes(',')) ? pdfDataUrl.split(',')[1] : ''; } catch(_) { pdfBase64 = ''; }
-            doc.save('survey-response.pdf');
-          }
-        } catch (e) { console.warn('PDF generation failed:', e); }
-
-        btnSubmit.textContent = 'Submitted ✓';
-        // Attempt to send email; show visible status either way
-  const result = await sendEmailWithPdfCopy(email, payload, pdfDataUrl, pdfBase64);
-        if (result && result.ok) {
-          submitStatus?.classList.remove('hidden');
-          submitStatus && (submitStatus.textContent = 'A copy of your response has been sent to your email id. If it’s not in your Inbox, please check Spam or Promotions.');
-        } else {
-          const msg = result && (result.error || (result.data && (result.data.error || JSON.stringify(result.data))) || 'Email send failed');
-          if (submitStatus) {
-            submitStatus.textContent = `Email not sent: ${msg}`;
-            submitStatus.classList.remove('hidden');
-            submitStatus.style.color = '#ff6b6b';
-          }
-          console.warn('Email send failed:', result);
-        }
-      } catch (err) {
-        console.error('Submit failed', err);
-        alert('Could not submit your response. Please try again.');
-        btnSubmit.textContent = original;
-        btnSubmit.disabled = false;
-        return;
-      }
-      // Optionally clear inputs
-      // document.querySelector('main')?.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
-    });
-  </script>
+  <script src="env.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
-<!-- End of body - all visible content goes above this line -->
 </html>
-<!-- End of HTML document -->
+ 
