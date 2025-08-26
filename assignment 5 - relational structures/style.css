@@ -1,0 +1,36 @@
+:root{
+	--bg:#0b0b0c;
+	--card:#111214;
+	--text:#dcdcdc;
+	--muted:#9a9a9a;
+	--border:#222;
+}
+html,body{height:100%;}
+body{
+	background:var(--bg);
+	color:var(--text);
+	font-family:Roboto, Arial, sans-serif;
+	margin:0;
+	padding:36px 20px;
+}
+main{max-width:none;margin:0;padding:0;}
+.section-title{
+	font-weight:700;
+	text-transform:uppercase;
+	margin-top:40px; /* match other assignments */
+	margin-bottom:12px;
+	font-size:14px;
+	color:#d6d6d6; /* match Assignment 4 heading color */
+	width:min(95vw,1200px);
+	margin-left:auto;
+	margin-right:auto;
+}
+.section-subtitle{font-weight:600;margin-top:28px;margin-bottom:8px;font-size:13px;color:var(--muted);width:min(95vw,1200px);margin-left:auto;margin-right:auto}
+p{font-size:16px;line-height:1.6;margin-bottom:16px;color:var(--text);width:min(95vw,1200px);margin-left:auto;margin-right:auto}
+.canvas-wrap{margin:12px auto 40px auto;display:flex;justify-content:center;width:min(95vw,1200px)}
+.canvas-wrap canvas{display:block;width:100% !important;height:auto !important;border:1px solid var(--border);border-radius:8px;background:var(--card);box-shadow:0 8px 24px rgba(0,0,0,0.5)}
+
+@media (max-width:480px){
+	.section-title{font-size:12px}
+	p{font-size:15px}
+}
