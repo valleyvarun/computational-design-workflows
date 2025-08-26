@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Assignment 4 — Temporal Structures</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<main>
+			<div class="section-title">Architecture Thesis Timeline</div>
+			<p>
+				For this assignment I visualized my architecture thesis timeline using D3.js. I created a Gantt chart that maps the different stages of my research and design process, showing their durations as well as their start and end dates. The visualization highlights how the phases overlap and connect, making the structure of the workflow and progression of the thesis clearer.
+			</p>
+
+					<div id="canvas-container-1">
+						<canvas id="timeline-canvas" width="800" height="420" aria-label="Temporal structures canvas"></canvas>
+					</div>
+
+					<!-- D3 Gantt container is appended inside canvas-container-1 by gnatt-chart.js -->
+		</main>
+
+		<!-- Load D3 and thesis Gantt chart -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" integrity="sha512-5lq7kE6qg3Y0zAgkDN0lqX8V8dKHlC4uQO6uNEp8n6oWmO3Tq9q8T4EIzV0k7GZ1Zxq8wp3zF+fY2m1VY3Yd7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="gnatt-chart.js"></script>
+	</body>
+ </html>

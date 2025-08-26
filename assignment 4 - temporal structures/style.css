@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+	--bg: #0b0b0b;
+	--card: #141414;
+	--text: #eaeaea;
+	--muted: #9aa4b2;
+	--border: #222;
+	--accent: #7b61ff;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+	background: var(--bg);
+	color: var(--text);
+}
+
+main {
+	max-width: none;
+	margin: 0;
+	padding: 0;
+}
+
+.section-title {
+	font-weight: 700;
+	text-transform: uppercase;
+	margin-top: 40px;
+	margin-bottom: 12px;
+	font-size: 14px;
+	color: #d6d6d6;
+	width: min(95vw, 1200px);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+p {
+	font-size: 16px;
+	line-height: 1.6;
+	margin-bottom: 24px;
+	color: var(--text);
+	width: min(95vw, 1200px);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#canvas-container-1 {
+	margin: 24px auto 80px auto;
+	display: flex;
+	justify-content: center;
+	width: min(95vw, 1200px);
+}
+
+#canvas-container-1 canvas {
+	display: block;
+	width: 100% !important;
+	height: auto !important;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: var(--card);
+	box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+@media (max-width: 768px) {
+	main { margin: 40px auto; }
+}
