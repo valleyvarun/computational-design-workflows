@@ -14,6 +14,11 @@
   <!-- This loads the p5.js library which provides functions for creating graphics and animations -->
   <!-- ------------------------------------------------------------ -->
 
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
   
   <meta charset="UTF-8">
   <!-- This sets the character encoding to UTF-8, which supports special characters and emojis -->
@@ -58,8 +63,13 @@
     
     <div id="canvas-container-2"></div>
 
+  <!-- Section for Three.js demo -->
+  <div class="section-title">Cleanroom & Shell Building FAB</div>
+  <p>This canvas illustrates the typical configuration of a semiconductor FAB, featuring a cleanroom core enclosed by a protective shell. The geometry was modeled in SketchUp and integrated into the scene as GLB files using the Three.js library. Users can toggle the visibility of elements with the checkboxes below to reveal or hide components and gain a clearer understanding of the overall structure.</p>
+  <div id="threejs-container"></div>
+  <div class="canvas-spacer"></div>
     
-    
+
   </main>
   <!-- End of main content area -->
   
@@ -68,9 +78,11 @@
 
   <!-- LOAD EACH NEW P5.JS SCRIPT HERE -->
 
+
   <script src="lorenz-attractor.js"></script>
   <script src="npn-doping.js"></script>
-  <script src="zoom-pan.js"></script>
+  
+  <script src="three-obj.js"></script>
 
 
 </body>

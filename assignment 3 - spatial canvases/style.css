@@ -1,3 +1,9 @@
+/* Spacer below Three.js canvas for scroll buffer */
+.canvas-spacer {
+  height: 80px;
+  width: 100%;
+  display: block;
+}
 /* Import Google Fonts - this loads the Roboto font family from Google's servers */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
@@ -21,14 +27,13 @@ main {
 
 #canvas-container-1,
 #canvas-container-2,
-#canvas-container-3,
-#threejs-container-2,
-#threejs-container-3d {
+#threejs-container {
   margin: 24px auto;
-  display: flex;             /* center canvas horizontally */
+  display: flex;
   justify-content: center;
-  min-height: 100vh;       /* ensure container allows tall canvas */
-  width: min(95vw, 1200px); /* constrain overall width */
+  align-items: center;
+  min-height: 600px;
+  width: min(95vw, 1200px);
 }
 
 /* Add extra space after the first canvas section before the second begins */
@@ -36,13 +41,20 @@ main {
   margin-bottom: 80px; /* increase gap to next section */
 }
 
+/* Add extra space after the second canvas before the Three.js section title */
+#canvas-container-2 {
+  margin-bottom: 80px;
+}
+
 /* Ensure p5 canvas sits nicely as a block element */
 #canvas-container-1 canvas,
 #canvas-container-2 canvas,
-#canvas-container-3 canvas {
+#threejs-container canvas {
   display: block;
-  width: 100% !important;   /* fill container width */
-  height: auto !important;  /* scale height accordingly */
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* Restore section title styling used by the page */
@@ -118,17 +130,17 @@ p {
   border-color: #bbb;
 }
 
-
-/* Style for Three.js canvas containers to add spacing between them */
-#threejs-container,
-#threejs-canvas {
-  margin-bottom: 40px;                /* Add 40 pixels of space below each canvas */
-  border: 1px solid #eee;             /* Add a subtle border around each canvas */
-  border-radius: 4px;                 /* Add slightly rounded corners */
-  overflow: hidden;                   /* Ensure canvas content doesn't overflow the border */
+/* Force all Three.js checkboxes to stay in a single row */
+#controls-3.controls {
+  display: flex;
+  flex-wrap: nowrap;   /* keep one row */
+  align-items: center;
+  gap: 12px;           /* spacing between items */
+  overflow-x: auto;    /* safe on small screens */
 }
 
-/* Add extra spacing after the last canvas container */
-#threejs-canvas {
-  margin-bottom: 60px;                /* Extra space after the last canvas */
+
+#threejs-container {
+  margin-bottom: 50px;
+  margin-bottom: 80px; /* extra space below canvas for scroll buffer */
 }
